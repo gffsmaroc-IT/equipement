@@ -6,8 +6,8 @@
     <title>Burger King - IT Dashboard</title>
     <style>
         :root {
-            --primary: #da291c; /* Burger King Red */
-            --secondary: #0033a0; /* Dark Blue */
+            --primary: #da291c;
+            --secondary: #0033a0;
             --bg-color: #f4f4f5;
             --card-bg: #ffffff;
             --text-dark: #18181b;
@@ -106,7 +106,6 @@
             background-color: #f8fafc;
         }
 
-        /* Category Separator styling mimicking your Excel file */
         .category-row {
             background-color: var(--primary) !important;
             color: white;
@@ -119,7 +118,6 @@
             padding: 0.5rem 1rem;
         }
 
-        /* Badges */
         .badge {
             padding: 0.3rem 0.8rem;
             border-radius: 6px;
@@ -164,7 +162,7 @@
                 <label for="restaurantSelect">Sélectionner un Restaurant :</label>
                 <select id="restaurantSelect">
                     <option value="" disabled selected>-- Choisir parmi la liste --</option>
-                    </select>
+                </select>
             </div>
         </div>
 
@@ -187,7 +185,7 @@
                     </tr>
                 </thead>
                 <tbody id="tableBody">
-                    </tbody>
+                </tbody>
             </table>
         </div>
     </div>
@@ -195,13 +193,11 @@
     <script>
         const SHEET_ID = '1FiYgCercDwkzpkLDTQe51y_S9NbcBP8Nd_vG26E8y5Q'; 
         
-        // Add all your exact 40 sheet names here
         const SHEET_NAMES = [
             'Etat équipement IT 2026 Techfin',
             'Etat équipement IT 2026 Temara',
             'Etat équipement IT 2026 Relais',
             'Etat équipement IT 2026 Agdal'
-            // Keep adding the rest...
         ];
 
         const selectEl = document.getElementById('restaurantSelect');
@@ -210,11 +206,9 @@
         const tableBody = document.getElementById('tableBody');
         const emptyState = document.getElementById('emptyState');
 
-        // Populate dropdown menu
         SHEET_NAMES.forEach(name => {
             const option = document.createElement('option');
             option.value = name;
-            // Clean the dropdown text for better UX
             option.textContent = name.replace('Etat équipement IT 2026 ', 'BK '); 
             selectEl.appendChild(option);
         });
@@ -223,29 +217,39 @@
             fetchSheetData(e.target.value);
         });
 
-        async function fetchSheetData(sheetName) {
+        function fetchSheetData(sheetName) {
             emptyState.style.display = 'none';
             tableContainer.style.display = 'none';
             loader.style.display = 'block';
             tableBody.innerHTML = '';
 
-            // Fetch from A7 to G to capture headers and data
-            const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(sheetName)}&range=A7:G`;
+            const oldScript = document.getElementById('gviz-script');
+            if (oldScript) {
+                oldScript.remove();
+            }
 
-            try {
-                const response = await fetch(url);
-                const text = await response.text();
-                const jsonString = text.match(/(?<=.*\().*(?=\);)/s)[0];
-                const data = JSON.parse(jsonString);
-                
-                renderTable(data.table.rows);
-            } catch (error) {
-                console.error('Data fetch error:', error);
-                emptyState.innerHTML = `<span style="color:red">Erreur de connexion à la base de données. Vérifiez l'ID.</span>`;
+            const script = document.createElement('script');
+            script.id = 'gviz-script';
+            script.src = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json;responseHandler:handleGoogleSheetsResponse&sheet=${encodeURIComponent(sheetName)}&range=A7:G`;
+            
+            script.onerror = function() {
+                emptyState.innerHTML = `<span style="color:red">Erreur de connexion. Vérifiez votre internet.</span>`;
                 emptyState.style.display = 'block';
                 loader.style.display = 'none';
-            }
+            };
+
+            document.body.appendChild(script);
         }
+
+        window.handleGoogleSheetsResponse = function(response) {
+            if (response.status === 'error') {
+                emptyState.innerHTML = `<span style="color:red">Erreur: ${response.errors[0].message}. Vérifiez le nom de la feuille.</span>`;
+                emptyState.style.display = 'block';
+                loader.style.display = 'none';
+                return;
+            }
+            renderTable(response.table.rows);
+        };
 
         function getBadgeHTML(value, type) {
             if (!value || value.toString().trim() === '') return `<span class="badge badge-empty">-</span>`;
@@ -268,7 +272,6 @@
         function renderTable(rows) {
             let bodyHtml = '';
             
-            // Start iterating from index 1 to skip the column headers in row 7
             for (let i = 1; i < rows.length; i++) {
                 const c = rows[i].c;
                 if (!c) continue;
@@ -276,10 +279,8 @@
                 const rawCategory = c[0] && c[0].v ? c[0].v.toString().trim() : '';
                 const description = c[1] && c[1].v ? c[1].v.toString().trim() : '';
                 
-                // If the entire row is completely empty, skip it
                 if (!rawCategory && !description) continue;
 
-                // If we detect a new Category in column A (e.g. "Bureau :", "POS :")
                 if (rawCategory) {
                     const cleanCategory = rawCategory.replace(':', '').trim();
                     bodyHtml += `
@@ -289,7 +290,6 @@
                     `;
                 }
 
-                // If there is a description in column B, render the data row
                 if (description) {
                     const exist = c[2] && c[2].v ? c[2].v : '';
                     const marque = c[3] && c[3].v ? c[3].v : '';
