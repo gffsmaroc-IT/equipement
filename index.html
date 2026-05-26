@@ -3,125 +3,189 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global Equipment Dashboard</title>
+    <title>IT Equipment Dashboard</title>
     <style>
         :root {
-            --primary-color: #e11d48;
-            --background-color: #f1f5f9;
+            --primary: #1e3a8a;
+            --secondary: #d97706;
+            --bg-color: #f3f4f6;
             --card-bg: #ffffff;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --border-radius: 8px;
+            --text-dark: #111827;
+            --text-light: #6b7280;
+            --border: #e5e7eb;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
-            background-color: var(--background-color);
-            color: var(--text-main);
+            background-color: var(--bg-color);
+            color: var(--text-dark);
             padding: 2rem;
         }
 
-        .container {
-            max-width: 1200px;
+        .dashboard-wrapper {
+            max-width: 1400px;
             margin: 0 auto;
         }
 
-        .header {
-            text-align: center;
+        .header-section {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             margin-bottom: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
         }
 
-        .selector-box {
-            background: var(--card-bg);
-            padding: 1.5rem;
-            border-radius: var(--border-radius);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            margin-bottom: 2rem;
+        .header-section h1 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
         }
 
         select {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #cbd5e1;
-            border-radius: 4px;
+            flex: 1;
+            max-width: 400px;
+            padding: 0.8rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
             font-size: 1rem;
-            margin-top: 0.5rem;
+            background-color: #fff;
+            cursor: pointer;
             outline: none;
+            transition: border-color 0.2s;
         }
 
-        .loader {
+        select:focus {
+            border-color: var(--primary);
+        }
+
+        .table-container {
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
             display: none;
-            text-align: center;
-            padding: 2rem;
-            font-weight: bold;
-            color: var(--primary-color);
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            background: var(--card-bg);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            border-radius: var(--border-radius);
-            overflow: hidden;
-            display: none;
+            text-align: left;
         }
 
-        th, td {
-            padding: 1rem;
-            text-align: left;
-            border-bottom: 1px solid #e2e8f0;
+        thead {
+            background-color: var(--primary);
+            color: white;
         }
 
         th {
-            background-color: #f8fafc;
+            padding: 1.2rem 1rem;
             font-weight: 600;
-            color: #334155;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
-        tr:hover {
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+            font-size: 0.95rem;
+        }
+
+        tbody tr:hover {
             background-color: #f8fafc;
+        }
+
+        .category-cell {
+            font-weight: 700;
+            color: var(--secondary);
+            font-size: 1.1rem;
+        }
+
+        /* Status Badges */
+        .badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .badge-yes { background-color: #dcfce7; color: #166534; }
+        .badge-no { background-color: #fee2e2; color: #991b1b; }
+        .badge-good { background-color: #dbeafe; color: #1e40af; }
+        .badge-bad { background-color: #ffedd5; color: #9a3412; }
+        .badge-empty { background-color: #f3f4f6; color: #6b7280; }
+
+        .loader {
+            display: none;
+            text-align: center;
+            padding: 3rem;
+            font-size: 1.2rem;
+            color: var(--primary);
+            font-weight: 600;
         }
 
         .empty-state {
             text-align: center;
-            padding: 3rem;
+            padding: 4rem;
             background: var(--card-bg);
-            border-radius: var(--border-radius);
-            color: var(--text-muted);
+            border-radius: 12px;
+            color: var(--text-light);
+            font-size: 1.1rem;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="header">
-            <h1>Etat des Équipements IT</h1>
+    <div class="dashboard-wrapper">
+        <div class="header-section">
+            <h1>IT Equipment Global Dashboard</h1>
+            <div class="controls">
+                <label for="restaurantSelect"><strong>Select Location:</strong></label>
+                <select id="restaurantSelect">
+                    <option value="" disabled selected>-- Select from the 40 Restaurants --</option>
+                    </select>
+            </div>
         </div>
 
-        <div class="selector-box">
-            <label for="restaurantSelect"><strong>Select Restaurant :</strong></label>
-            <select id="restaurantSelect">
-                <option value="" disabled selected>-- Choose a Restaurant --</option>
-                </select>
-        </div>
-
-        <div id="loader" class="loader">Loading data from Google Sheets...</div>
+        <div id="loader" class="loader">Fetching data securely from database...</div>
 
         <div id="emptyState" class="empty-state">
-            <p>Select a restaurant from the dropdown to view its equipment data.</p>
+            Please select a restaurant location from the dropdown menu to view its IT inventory.
         </div>
 
-        <div class="table-responsive">
-            <table id="dataTable">
-                <thead id="tableHead">
-                    </thead>
+        <div class="table-container" id="tableContainer">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Description</th>
+                        <th>Existance O/N</th>
+                        <th>Marque</th>
+                        <th>Modèle</th>
+                        <th>Etat de mise en marche</th>
+                        <th>Remarque</th>
+                    </tr>
+                </thead>
                 <tbody id="tableBody">
                     </tbody>
             </table>
@@ -129,104 +193,113 @@
     </div>
 
     <script>
-        // CONFIGURATION: Replace this ID with the one from your new share link
         const SHEET_ID = '1FiYgCercDwkzpkLDTQe51y_S9NbcBP8Nd_vG26E8y5Q'; 
         
-        // CONFIGURATION: Add the exact names of your tabs/sheets here
+        // You must manually add all 40 exact sheet names here. Client-side JS cannot auto-fetch tab names from Google Sheets.
         const SHEET_NAMES = [
             'Etat équipement IT 2026 Techfin',
             'Etat équipement IT 2026 Temara',
             'Etat équipement IT 2026 Relais',
-            'Etat équipement IT 2026 Agdal'
+            'Etat équipement IT 2026 Agdal',
+            // Add the remaining 36 sheet names here exactly as they are typed in Excel:
+            // 'Etat équipement IT 2026 Maarif',
+            // 'Etat équipement IT 2026 Marina',
         ];
 
         const selectEl = document.getElementById('restaurantSelect');
         const loader = document.getElementById('loader');
-        const dataTable = document.getElementById('dataTable');
-        const tableHead = document.getElementById('tableHead');
+        const tableContainer = document.getElementById('tableContainer');
         const tableBody = document.getElementById('tableBody');
         const emptyState = document.getElementById('emptyState');
 
-        // Populate dropdown
         SHEET_NAMES.forEach(name => {
             const option = document.createElement('option');
             option.value = name;
-            option.textContent = name;
+            option.textContent = name.replace('Etat équipement IT 2026 ', ''); 
             selectEl.appendChild(option);
         });
 
-        // Handle selection change
         selectEl.addEventListener('change', (e) => {
-            const selectedSheet = e.target.value;
-            fetchSheetData(selectedSheet);
+            fetchSheetData(e.target.value);
         });
 
         async function fetchSheetData(sheetName) {
-            // UI setup for loading
             emptyState.style.display = 'none';
-            dataTable.style.display = 'none';
+            tableContainer.style.display = 'none';
             loader.style.display = 'block';
-            tableHead.innerHTML = '';
             tableBody.innerHTML = '';
 
-            // Google Visualization API endpoint for public sheets
-            const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(sheetName)}`;
+            // The &range=A7:G is critical. It skips the messy title rows (1-6) and only fetches the actual table data.
+            const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(sheetName)}&range=A7:G`;
 
             try {
                 const response = await fetch(url);
                 const text = await response.text();
-                
-                // The response is a script, we extract the JSON part
                 const jsonString = text.match(/(?<=.*\().*(?=\);)/s)[0];
                 const data = JSON.parse(jsonString);
                 
-                renderTable(data.table);
+                renderTable(data.table.rows);
             } catch (error) {
-                console.error('Error fetching data:', error);
-                emptyState.innerHTML = `<p style="color:red;">Error loading data. Make sure the Sheet ID is correct and the sheet is public.</p>`;
+                console.error('Data fetch error:', error);
+                emptyState.innerHTML = `<span style="color:red">Failed to load data. Please check connection and Sheet ID.</span>`;
                 emptyState.style.display = 'block';
                 loader.style.display = 'none';
             }
         }
 
-        function renderTable(tableData) {
-            const cols = tableData.cols;
-            const rows = tableData.rows;
+        function getBadgeHTML(value, type) {
+            if (!value || value.trim() === '') return `<span class="badge badge-empty">-</span>`;
+            
+            const valLower = value.toString().toLowerCase().trim();
+            
+            if (type === 'exist') {
+                if (valLower === 'oui' || valLower === 'yes') return `<span class="badge badge-yes">${value}</span>`;
+                if (valLower === 'non' || valLower === 'no') return `<span class="badge badge-no">${value}</span>`;
+            }
+            
+            if (type === 'status') {
+                if (valLower === 'bien' || valLower === 'good') return `<span class="badge badge-good">${value}</span>`;
+                if (valLower === 'mauvais' || valLower === 'bad' || valLower === 'panne') return `<span class="badge badge-bad">${value}</span>`;
+            }
+            
+            return value; 
+        }
 
-            // Generate Headers
-            let headHtml = '<tr>';
-            cols.forEach(col => {
-                if (col.label) {
-                    headHtml += `<th>${col.label}</th>`;
-                }
-            });
-            headHtml += '</tr>';
-            tableHead.innerHTML = headHtml;
-
-            // Generate Rows
+        function renderTable(rows) {
             let bodyHtml = '';
-            rows.forEach(row => {
-                let rowHtml = '<tr>';
-                let hasData = false;
-                
-                row.c.forEach(cell => {
-                    const cellValue = cell && cell.v !== null ? cell.v : '';
-                    if (cellValue !== '') hasData = true; // Check if row is not completely empty
-                    rowHtml += `<td>${cellValue}</td>`;
-                });
-                
-                rowHtml += '</tr>';
-                
-                // Only add row if it contains data (ignores empty trailing rows)
-                if (hasData) {
-                    bodyHtml += rowHtml;
-                }
-            });
-            tableBody.innerHTML = bodyHtml;
 
-            // Hide loader and show table
+            rows.forEach(row => {
+                const c = row.c;
+                if (!c) return;
+
+                const category = c[0] && c[0].v ? c[0].v : '';
+                const description = c[1] && c[1].v ? c[1].v : '';
+                
+                // Skip completely empty rows in the table
+                if (!category && !description) return;
+
+                const exist = c[2] && c[2].v ? c[2].v : '';
+                const marque = c[3] && c[3].v ? c[3].v : '';
+                const modele = c[4] && c[4].v ? c[4].v : '';
+                const status = c[5] && c[5].v ? c[5].v : '';
+                const remarque = c[6] && c[6].v ? c[6].v : '';
+
+                bodyHtml += `
+                    <tr>
+                        <td class="category-cell">${category}</td>
+                        <td><strong>${description}</strong></td>
+                        <td>${getBadgeHTML(exist, 'exist')}</td>
+                        <td>${marque || '-'}</td>
+                        <td>${modele || '-'}</td>
+                        <td>${getBadgeHTML(status, 'status')}</td>
+                        <td>${remarque || '-'}</td>
+                    </tr>
+                `;
+            });
+
+            tableBody.innerHTML = bodyHtml;
             loader.style.display = 'none';
-            dataTable.style.display = 'table';
+            tableContainer.style.display = 'block';
         }
     </script>
 </body>
