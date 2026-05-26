@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Equipment Dashboard</title>
+    <style>
+        :root {
+            --primary-color: #e11d48;
+            --background-color: #f1f5f9;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-radius: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-main);
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .selector-box {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            font-size: 1rem;
+            margin-top: 0.5rem;
+            outline: none;
+        }
+
+        .loader {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--card-bg);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            display: none;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            background-color: #f8fafc;
+            font-weight: 600;
+            color: #334155;
+        }
+
+        tr:hover {
+            background-color: #f8fafc;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>Etat des Équipements IT</h1>
+        </div>
+
+        <div class="selector-box">
+            <label for="restaurantSelect"><strong>Select Restaurant :</strong></label>
+            <select id="restaurantSelect">
+                <option value="" disabled selected>-- Choose a Restaurant --</option>
+                </select>
+        </div>
+
+        <div id="loader" class="loader">Loading data from Google Sheets...</div>
+
+        <div id="emptyState" class="empty-state">
+            <p>Select a restaurant from the dropdown to view its equipment data.</p>
+        </div>
+
+        <div class="table-responsive">
+            <table id="dataTable">
+                <thead id="tableHead">
+                    </thead>
+                <tbody id="tableBody">
+                    </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // CONFIGURATION: Replace this ID with the one from your new share link
+        const SHEET_ID = '1FiYgCercDwkzpkLDTQe51y_S9NbcBP8Nd_vG26E8y5Q'; 
+        
+        // CONFIGURATION: Add the exact names of your tabs/sheets here
+        const SHEET_NAMES = [
+            'Etat équipement IT 2026 Techfin',
+            'Etat équipement IT 2026 Temara',
+            'Etat équipement IT 2026 Relais',
+            'Etat équipement IT 2026 Agdal'
+        ];
+
+        const selectEl = document.getElementById('restaurantSelect');
+        const loader = document.getElementById('loader');
+        const dataTable = document.getElementById('dataTable');
+        const tableHead = document.getElementById('tableHead');
+        const tableBody = document.getElementById('tableBody');
+        const emptyState = document.getElementById('emptyState');
+
+        // Populate dropdown
+        SHEET_NAMES.forEach(name => {
+            const option = document.createElement('option');
+            option.value = name;
+            option.textContent = name;
+            selectEl.appendChild(option);
+        });
+
+        // Handle selection change
+        selectEl.addEventListener('change', (e) => {
+            const selectedSheet = e.target.value;
+            fetchSheetData(selectedSheet);
+        });
+
+        async function fetchSheetData(sheetName) {
+            // UI setup for loading
+            emptyState.style.display = 'none';
+            dataTable.style.display = 'none';
+            loader.style.display = 'block';
+            tableHead.innerHTML = '';
+            tableBody.innerHTML = '';
+
+            // Google Visualization API endpoint for public sheets
+            const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(sheetName)}`;
+
+            try {
+                const response = await fetch(url);
+                const text = await response.text();
+                
+                // The response is a script, we extract the JSON part
+                const jsonString = text.match(/(?<=.*\().*(?=\);)/s)[0];
+                const data = JSON.parse(jsonString);
+                
+                renderTable(data.table);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                emptyState.innerHTML = `<p style="color:red;">Error loading data. Make sure the Sheet ID is correct and the sheet is public.</p>`;
+                emptyState.style.display = 'block';
+                loader.style.display = 'none';
+            }
+        }
+
+        function renderTable(tableData) {
+            const cols = tableData.cols;
+            const rows = tableData.rows;
+
+            // Generate Headers
+            let headHtml = '<tr>';
+            cols.forEach(col => {
+                if (col.label) {
+                    headHtml += `<th>${col.label}</th>`;
+                }
+            });
+            headHtml += '</tr>';
+            tableHead.innerHTML = headHtml;
+
+            // Generate Rows
+            let bodyHtml = '';
+            rows.forEach(row => {
+                let rowHtml = '<tr>';
+                let hasData = false;
+                
+                row.c.forEach(cell => {
+                    const cellValue = cell && cell.v !== null ? cell.v : '';
+                    if (cellValue !== '') hasData = true; // Check if row is not completely empty
+                    rowHtml += `<td>${cellValue}</td>`;
+                });
+                
+                rowHtml += '</tr>';
+                
+                // Only add row if it contains data (ignores empty trailing rows)
+                if (hasData) {
+                    bodyHtml += rowHtml;
+                }
+            });
+            tableBody.innerHTML = bodyHtml;
+
+            // Hide loader and show table
+            loader.style.display = 'none';
+            dataTable.style.display = 'table';
+        }
+    </script>
+</body>
+</html>
