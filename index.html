@@ -1,319 +1,290 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Burger King - IT Dashboard</title>
-    <style>
-        :root {
-            --primary: #da291c;
-            --secondary: #0033a0;
-            --bg-color: #f4f4f5;
-            --card-bg: #ffffff;
-            --text-dark: #18181b;
-            --border: #e4e4e7;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BK IT Equipment Dashboard 2026</title>
+<style>
+  :root {
+    --bg: #f5f4f0;
+    --surface: #ffffff;
+    --surface2: #f0ede8;
+    --border: #ddd9d2;
+    --text: #1a1a18;
+    --muted: #6b6860;
+    --accent: #c8372d;
+    --accent-light: #fdf1f0;
+    --green: #1a6e3c;
+    --green-bg: #edf7f2;
+    --amber: #8a5a00;
+    --amber-bg: #fff8ec;
+    --red: #b82020;
+    --red-bg: #fdf0f0;
+    --gray: #5a5a5a;
+    --gray-bg: #f5f5f5;
+    --radius: 10px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', system-ui, sans-serif;
-        }
+  /* HEADER */
+  .header { background: var(--accent); color: #fff; padding: 20px 32px; display: flex; align-items: center; gap: 16px; }
+  .header-logo { font-size: 28px; font-weight: 800; letter-spacing: -1px; }
+  .header-title { font-size: 16px; font-weight: 500; opacity: 0.9; }
+  .header-sub { font-size: 12px; opacity: 0.65; margin-top: 2px; }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-dark);
-            padding: 2rem;
-        }
+  /* TOOLBAR */
+  .toolbar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 14px 32px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow); }
+  .toolbar label { font-size: 13px; color: var(--muted); font-weight: 500; white-space: nowrap; }
+  .toolbar select, .toolbar input { border: 1px solid var(--border); border-radius: 6px; padding: 7px 12px; font-size: 13px; background: var(--bg); color: var(--text); cursor: pointer; outline: none; }
+  .toolbar select:focus, .toolbar input:focus { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(200,55,45,0.12); }
+  .toolbar select { min-width: 260px; }
+  .toolbar input { width: 200px; }
+  .badge-count { font-size: 12px; background: var(--accent-light); color: var(--accent); border-radius: 20px; padding: 3px 10px; font-weight: 600; border: 1px solid rgba(200,55,45,0.2); }
+  .toolbar-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
 
-        .dashboard-wrapper {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
+  /* STATS BAR */
+  .stats-bar { display: flex; gap: 12px; padding: 16px 32px; flex-wrap: wrap; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 20px; flex: 1; min-width: 130px; box-shadow: var(--shadow); }
+  .stat-card .val { font-size: 26px; font-weight: 700; color: var(--text); line-height: 1; }
+  .stat-card .lbl { font-size: 11px; color: var(--muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .stat-card.red .val { color: var(--red); }
+  .stat-card.green .val { color: var(--green); }
+  .stat-card.amber .val { color: var(--amber); }
 
-        .header-section {
-            background: var(--card-bg);
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-            margin-bottom: 2rem;
-        }
+  /* MAIN CONTENT */
+  .content { padding: 0 32px 32px; }
 
-        .header-section h1 {
-            color: var(--secondary);
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-        }
+  /* ALL-VIEW TABLE */
+  .table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+  .table-title { padding: 16px 20px 12px; font-size: 14px; font-weight: 600; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead th { background: var(--surface2); padding: 10px 14px; text-align: left; font-weight: 600; font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: var(--surface2); }
+  tbody td { padding: 9px 14px; vertical-align: top; }
+  .restaurant-name { font-weight: 600; color: var(--text); }
+  .restaurant-num { font-size: 11px; color: var(--muted); }
 
-        .controls {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
+  /* STATUS BADGES */
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+  .badge-ok { background: var(--green-bg); color: var(--green); }
+  .badge-warn { background: var(--amber-bg); color: var(--amber); }
+  .badge-fail { background: var(--red-bg); color: var(--red); }
+  .badge-na { background: var(--gray-bg); color: var(--gray); }
 
-        select {
-            width: 100%;
-            max-width: 500px;
-            padding: 1rem;
-            border: 2px solid var(--border);
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--text-dark);
-            cursor: pointer;
-            outline: none;
-            transition: border-color 0.2s;
-        }
+  /* SINGLE RESTAURANT VIEW */
+  .rest-header { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-start; box-shadow: var(--shadow); }
+  .rest-name { font-size: 22px; font-weight: 700; }
+  .rest-num { font-size: 13px; color: var(--muted); margin-top: 4px; }
+  .rest-pills { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 2px; }
 
-        select:focus {
-            border-color: var(--primary);
-        }
+  .equip-sections { display: grid; gap: 16px; }
+  .equip-section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+  .equip-section-title { padding: 12px 18px; font-size: 13px; font-weight: 600; background: var(--surface2); border-bottom: 1px solid var(--border); color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+  .equip-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1px; background: var(--border); }
+  .equip-item { background: var(--surface); padding: 14px 18px; }
+  .equip-item-name { font-weight: 600; font-size: 13px; margin-bottom: 6px; display: flex; align-items: center; justify-content: space-between; }
+  .equip-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
+  .equip-chip { font-size: 11px; background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: 2px 7px; color: var(--muted); }
+  .equip-chip.brand { background: var(--surface2); color: var(--text); }
+  .remark-box { margin-top: 8px; font-size: 11px; color: var(--amber); background: var(--amber-bg); border-radius: 5px; padding: 5px 9px; border-left: 3px solid #e8a000; }
+  .remark-box.danger { color: var(--red); background: var(--red-bg); border-left-color: var(--red); }
 
-        .table-container {
-            background: var(--card-bg);
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-            overflow: hidden;
-            display: none;
-        }
+  .empty-msg { text-align: center; color: var(--muted); padding: 60px 20px; font-size: 15px; }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-        }
-
-        thead {
-            background-color: var(--secondary);
-            color: white;
-        }
-
-        th {
-            padding: 1rem;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        td {
-            padding: 0.8rem 1rem;
-            border-bottom: 1px solid var(--border);
-            font-size: 0.95rem;
-        }
-
-        tbody tr:hover:not(.category-row) {
-            background-color: #f8fafc;
-        }
-
-        .category-row {
-            background-color: var(--primary) !important;
-            color: white;
-            font-weight: bold;
-            font-size: 1.1rem;
-            letter-spacing: 1px;
-        }
-
-        .category-row td {
-            padding: 0.5rem 1rem;
-        }
-
-        .badge {
-            padding: 0.3rem 0.8rem;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            display: inline-block;
-            text-align: center;
-        }
-
-        .badge-yes { background-color: #dcfce7; color: #166534; }
-        .badge-no { background-color: #fee2e2; color: #991b1b; }
-        .badge-good { background-color: #dbeafe; color: #1e40af; }
-        .badge-bad { background-color: #ffedd5; color: #9a3412; }
-        .badge-empty { color: #a1a1aa; }
-
-        .loader {
-            display: none;
-            text-align: center;
-            padding: 4rem;
-            font-size: 1.2rem;
-            color: var(--secondary);
-            font-weight: bold;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 5rem 2rem;
-            background: var(--card-bg);
-            border-radius: 12px;
-            color: #71717a;
-            font-size: 1.1rem;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-        }
-    </style>
+  @media (max-width: 700px) {
+    .header, .toolbar, .stats-bar, .content { padding-left: 16px; padding-right: 16px; }
+    .toolbar { gap: 10px; }
+    .toolbar select { min-width: unset; width: 100%; }
+  }
+</style>
 </head>
 <body>
 
-    <div class="dashboard-wrapper">
-        <div class="header-section">
-            <h1>Etat des Équipements IT - BK Maroc</h1>
-            <div class="controls">
-                <label for="restaurantSelect">Sélectionner un Restaurant :</label>
-                <select id="restaurantSelect">
-                    <option value="" disabled selected>-- Choisir parmi la liste --</option>
-                </select>
-            </div>
-        </div>
+<div class="header">
+  <div class="header-logo">BK</div>
+  <div>
+    <div class="header-title">Tableau de bord — État matériel IT 2026</div>
+    <div class="header-sub">Burger King Morocco · Techfin</div>
+  </div>
+</div>
 
-        <div id="loader" class="loader">Synchronisation des données...</div>
+<div class="toolbar">
+  <label for="restSelect">Restaurant</label>
+  <select id="restSelect">
+    <option value="">— Tous les restaurants —</option>
+  </select>
+  <label for="searchBox">Recherche</label>
+  <input type="text" id="searchBox" placeholder="Nom, équipement, marque...">
+  <span class="badge-count" id="countBadge">37 restaurants</span>
+</div>
 
-        <div id="emptyState" class="empty-state">
-            Veuillez sélectionner un restaurant pour afficher son matériel informatique.
-        </div>
+<div class="stats-bar" id="statsBar"></div>
+<div class="content" id="mainContent"></div>
 
-        <div class="table-container" id="tableContainer">
-            <table>
-                <thead>
-                    <tr>
-                        <th width="30%">Description</th>
-                        <th width="10%">Existance</th>
-                        <th width="15%">Marque</th>
-                        <th width="15%">Modèle</th>
-                        <th width="10%">Etat</th>
-                        <th width="20%">Remarque</th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody">
-                </tbody>
-            </table>
-        </div>
+<script>
+const RAW = [{"sheet":"Etat équipement IT 2026 Techfin","number":"","name":"BK TACHFINE","equipment":[{"description":"PC Aloha Manager","exists":"oui","brand":"","model":"","status":"bien","remark":""},{"description":"Ecran","exists":"oui","brand":"","model":"","status":"bien","remark":""},{"description":"Switch (armoire informatique)","exists":"oui","brand":"","model":"","status":"bien","remark":""},{"description":"Imprimante","exists":"oui","brand":"","model":"","status":"bien","remark":""},{"description":"Routeur Bureau Manager","exists":"oui","brand":"","model":"","status":"bien","remark":""},{"description":"Imprimante Godex (PTD)","exists":"oui","brand":"","model":"","status":"bien","remark":""},{"description":"Caisse 1","exists":"oui","brand":"","model":"","status":"bien","remark":""},{"description":"Caisse 2","exists":"oui","brand":"","model":"","status":"bien","remark":""},{"description":"Caisse 3","exists":"oui","brand":"","model":"","status":"bien","remark":""},{"description":"Caisse 4","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 5","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 6","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 7","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 1","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 2","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 3","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 4","exists":"","brand":"","model":"","status":"","remark":""}]},{"sheet":"Etat équipement IT 2026 Relais ","number":"","name":"BK RELAIS BOUREGREG","equipment":[{"description":"PC Aloha Manager","exists":"OUI","brand":"hp","model":"","status":"Ras","remark":""},{"description":"Ecran","exists":"OUI","brand":"hp","model":"","status":"Ras","remark":""},{"description":"Switch (armoire informatique)","exists":"OUI","brand":"","model":"","status":"Ras","remark":""},{"description":"Imprimante","exists":"OUI","brand":"Canon","model":"","status":"Ras","remark":""},{"description":"Routeur Bureau Manager","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Imprimante Godex (PTD)","exists":"OUI","brand":"Godex","model":"","status":"Ras","remark":""},{"description":"Caisse 1","exists":"Oui","brand":"NCR","model":"","status":"Ras","remark":""},{"description":"Caisse 2","exists":"Oui","brand":"NCR","model":"","status":"Ras","remark":""},{"description":"Caisse 3","exists":"Oui","brand":"NCR","model":"","status":"Ras","remark":""},{"description":"Caisse 4","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 5","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 6","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 7","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 1","exists":"Oui","brand":"NCR Corporation","model":"","status":"Ras","remark":""},{"description":"Tiroir 2","exists":"Oui","brand":"NCR Corporation","model":"","status":"Ras","remark":""},{"description":"Tiroir 3","exists":"Oui","brand":"NCR Corporation","model":"","status":"Ras","remark":""},{"description":"Tiroir 4","exists":"","brand":"","model":"","status":"","remark":""}]},{"sheet":"Etat équipement IT 2026 Agdal","number":"19731","name":"BK AGDAL","equipment":[{"description":"PC Aloha Manager","exists":"Oui","brand":"","model":"","status":"Mal","remark":"PC est lourd"},{"description":"Ecran","exists":"Oui","brand":"","model":"","status":"Bien","remark":""},{"description":"Switch (armoire informatique)","exists":"Oui","brand":"","model":"","status":"Bien","remark":"Doit une organisation des cable"},{"description":"Imprimante","exists":"Oui","brand":"","model":"","status":"Bien","remark":""},{"description":"Routeur Bureau Manager","exists":"Oui","brand":"","model":"","status":"Bien","remark":""},{"description":"Imprimante Godex (PTD)","exists":"Oui","brand":"","model":"","status":"Bien","remark":""},{"description":"Caisse 1","exists":"Oui","brand":"","model":"","status":"","remark":""},{"description":"Caisse 2","exists":"Oui","brand":"","model":"","status":"","remark":""},{"description":"Caisse 3","exists":"Oui","brand":"","model":"","status":"","remark":""},{"description":"Caisse 4","exists":"Oui","brand":"","model":"","status":"","remark":""},{"description":"Caisse 5","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 6","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 7","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 1","exists":"oui","brand":"","model":"","status":"","remark":"tiroir doit changé, ses cotes sont nets"},{"description":"Tiroir 2","exists":"oui","brand":"","model":"","status":"","remark":"tiroir doit changé, ses cotes sont nets"},{"description":"Tiroir 3","exists":"oui","brand":"","model":"","status":"","remark":"tiroir doit changé, ses cotes sont nets"},{"description":"Tiroir 4","exists":"oui","brand":"","model":"","status":"","remark":""}]},{"sheet":"Etat équipement IT 2026 Depot","number":"25204","name":"BK DEPOT","equipment":[{"description":"PC Aloha Manager","exists":"1","brand":"DELL PRO TOWER","model":"","status":"","remark":""},{"description":"Ecran","exists":"1","brand":"DELL","model":"","status":"","remark":""},{"description":"Switch (armoire informatique)","exists":"1","brand":"","model":"","status":"","remark":""},{"description":"Imprimante","exists":"1","brand":"HP LASERN JET PRO M15 a","model":"","status":"","remark":""},{"description":"Routeur Bureau Manager","exists":"1","brand":"","model":"","status":"","remark":""},{"description":"Imprimante Godex (PTD)","exists":"1","brand":"GoDEX","model":"","status":"","remark":""},{"description":"Caisse 1","exists":"1","brand":"","model":"","status":"","remark":""},{"description":"Caisse 2","exists":"1","brand":"","model":"","status":"","remark":""},{"description":"Caisse 3","exists":"1","brand":"","model":"","status":"","remark":""},{"description":"Caisse 4","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 5","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 6","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 7","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 1","exists":"1","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 2","exists":"1","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 3","exists":"1","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 4","exists":"","brand":"","model":"","status":"","remark":""}]},{"sheet":"Etat équipement IT 2026 Mars","number":"30736","name":"2 MARS","equipment":[{"description":"PC Aloha Manager","exists":"OUI","brand":"","model":"","status":"RAS","remark":""},{"description":"Ecran","exists":"OUI","brand":"","model":"","status":"RAS","remark":""},{"description":"Switch (armoire informatique)","exists":"OUI","brand":"","model":"","status":"RAS","remark":""},{"description":"Imprimante","exists":"OUI","brand":"","model":"","status":"RAS","remark":""},{"description":"Routeur Bureau Manager","exists":"OUI","brand":"","model":"","status":"RAS","remark":""},{"description":"Imprimante Godex (PTD)","exists":"OUI","brand":"","model":"","status":"RAS","remark":""},{"description":"Caisse 1","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 2","exists":"OUI","brand":"","model":"","status":"RAS","remark":""},{"description":"Caisse 3","exists":"OUI","brand":"","model":"","status":"RAS","remark":""},{"description":"Caisse 4","exists":"OUI","brand":"","model":"","status":"RAS","remark":""},{"description":"Caisse 5","exists":"OUI","brand":"","model":"","status":"RAS","remark":""},{"description":"Caisse 6","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 7","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 1","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 2","exists":"OUI","brand":"","model":"","status":"RAS","remark":""},{"description":"Tiroir 3","exists":"OUI","brand":"","model":"","status":"RAS","remark":""},{"description":"Tiroir 4","exists":"OUI","brand":"","model":"","status":"RAS","remark":""}]},{"sheet":"Etat équipement IT 2026 Kitea","number":"18933","name":"BK KITEA GEANTE","equipment":[{"description":"PC Aloha Manager","exists":"oui","brand":"hp","model":"","status":"marche bien","remark":""},{"description":"Ecran","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Switch (armoire informatique)","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Imprimante","exists":"oui","brand":"hp","model":"","status":"marche bien","remark":""},{"description":"Routeur Bureau Manager","exists":"oui","brand":"nokia","model":"","status":"marche bien","remark":""},{"description":"Imprimante Godex (PTD)","exists":"oui","brand":"godex","model":"","status":"marche bien","remark":""},{"description":"Caisse 1","exists":"oui","brand":"ncr","model":"","status":"ça marche pas","remark":""},{"description":"Caisse 2","exists":"oui","brand":"ncr","model":"","status":"marche bien","remark":""},{"description":"Caisse 3","exists":"oui","brand":"ncr","model":"","status":"ça marche pas","remark":""},{"description":"Caisse 4","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 5","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 6","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 7","exists":"oui","brand":"ncr","model":"","status":"marche bien","remark":""},{"description":"Tiroir 1","exists":"oui","brand":"radiant","model":"","status":"marche bien","remark":""},{"description":"Tiroir 2","exists":"oui","brand":"radiant","model":"","status":"marche bien","remark":""},{"description":"Tiroir 3","exists":"oui","brand":"radiant","model":"","status":"ça marche pas","remark":""},{"description":"Tiroir 4","exists":"","brand":"","model":"","status":"","remark":""}]},{"sheet":"Etat équipement IT 2026 Harhour","number":"","name":"BK HARHOURA","equipment":[{"description":"PC Aloha Manager","exists":"OUI","brand":"hp","model":"","status":"Ras","remark":""},{"description":"Ecran","exists":"OUI","brand":"hp","model":"","status":"Ras","remark":""},{"description":"Switch (armoire informatique)","exists":"OUI","brand":"","model":"","status":"Ras","remark":""},{"description":"Imprimante","exists":"OUI","brand":"Canon","model":"","status":"Ras","remark":""},{"description":"Routeur Bureau Manager","exists":"OUI","brand":"Tp link","model":"","status":"Ras","remark":""},{"description":"Imprimante Godex (PTD)","exists":"OUI","brand":"Godex","model":"","status":"Ras","remark":""},{"description":"Caisse 1","exists":"Oui","brand":"NCR","model":"","status":"Ras","remark":""},{"description":"Caisse 2","exists":"Oui","brand":"NCR","model":"","status":"Ras","remark":""},{"description":"Caisse 3","exists":"Oui","brand":"NCR","model":"","status":"Ras","remark":""},{"description":"Caisse 4","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 5","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 6","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 7","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 1","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 2","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 3","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 4","exists":"","brand":"","model":"","status":"","remark":""}]},{"sheet":"Etat équipement IT 2026 CFC","number":"CFC","name":"BK CFC","equipment":[{"description":"PC Aloha Manager","exists":"O","brand":"DELL","model":"","status":"FONCTIONNEL","remark":""},{"description":"Ecran","exists":"O","brand":"HP","model":"","status":"FONCTIONNEL","remark":""},{"description":"Switch (armoire informatique)","exists":"O","brand":"HPE","model":"","status":"FONCTIONNEL","remark":""},{"description":"Imprimante","exists":"O","brand":"CANON","model":"","status":"FONCTIONNEL","remark":""},{"description":"Routeur Bureau Manager","exists":"O","brand":"HUAWEI","model":"","status":"FONCTIONNEL","remark":""},{"description":"Imprimante Godex (PTD)","exists":"O","brand":"GODEX","model":"","status":"FONCTIONNEL","remark":""},{"description":"Caisse 1","exists":"O","brand":"NCR","model":"","status":"FONCTIONNEL","remark":""},{"description":"Caisse 2","exists":"O","brand":"NCR","model":"","status":"FONCTIONNEL","remark":""},{"description":"Caisse 3","exists":"O","brand":"NCR","model":"","status":"FONCTIONNEL","remark":""},{"description":"Caisse 4","exists":"O","brand":"NCR","model":"","status":"FONCTIONNEL","remark":""},{"description":"Caisse 5","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 6","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 7","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 1","exists":"O","brand":"NCR","model":"","status":"FONCTIONNEL","remark":""},{"description":"Tiroir 2","exists":"O","brand":"NCR","model":"","status":"FONCTIONNEL","remark":""},{"description":"Tiroir 3","exists":"O","brand":"NCR","model":"","status":"FONCTIONNEL","remark":""},{"description":"Tiroir 4","exists":"O","brand":"NCR","model":"","status":"FONCTIONNEL","remark":""}]},{"sheet":"Etat équipement IT 2026 Targa","number":"29442","name":"TARGA","equipment":[{"description":"PC Aloha Manager","exists":"OUI","brand":"","model":"","status":"","remark":""},{"description":"Ecran","exists":"OUI","brand":"","model":"","status":"","remark":""},{"description":"Switch (armoire informatique)","exists":"OUI","brand":"","model":"","status":"","remark":""},{"description":"Imprimante","exists":"OUI","brand":"","model":"","status":"","remark":""},{"description":"Routeur Bureau Manager","exists":"OUI","brand":"","model":"","status":"","remark":""},{"description":"Imprimante Godex (PTD)","exists":"OUI","brand":"","model":"","status":"","remark":""},{"description":"Caisse 1","exists":"OUI","brand":"","model":"","status":"","remark":""},{"description":"Caisse 2","exists":"OUI","brand":"","model":"","status":"","remark":""},{"description":"Caisse 3","exists":"OUI","brand":"","model":"","status":"","remark":""},{"description":"Caisse 4","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 5","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 6","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 7","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 1","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 2","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 3","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 4","exists":"","brand":"","model":"","status":"","remark":""}]},{"sheet":"Etat équipement IT 2026 Carrefo","number":"30743","name":"BK CARREFOUR SALE","equipment":[{"description":"PC Aloha Manager","exists":"oui","brand":"DELL","model":"","status":"bien","remark":""},{"description":"Ecran","exists":"oui","brand":"HP","model":"","status":"bien","remark":""},{"description":"Switch (armoire informatique)","exists":"oui","brand":"HP","model":"","status":"bien","remark":""},{"description":"Imprimante","exists":"oui","brand":"canon","model":"","status":"bien","remark":""},{"description":"Routeur Bureau Manager","exists":"oui","brand":"LGX","model":"","status":"bien","remark":""},{"description":"Imprimante Godex (PTD)","exists":"oui","brand":"GODEX","model":"","status":"bien","remark":""},{"description":"Caisse 1","exists":"oui","brand":"NCR","model":"","status":"bien","remark":""},{"description":"Caisse 2","exists":"oui","brand":"NCR","model":"","status":"bien","remark":""},{"description":"Caisse 3","exists":"oui","brand":"NCR","model":"","status":"bien","remark":""},{"description":"Caisse 4","exists":"oui","brand":"NCR","model":"","status":"bien","remark":""},{"description":"Caisse 5","exists":"oui","brand":"NCR","model":"","status":"bien","remark":""},{"description":"Caisse 6","exists":"oui","brand":"NCR","model":"","status":"bien","remark":""},{"description":"Caisse 7","exists":"non","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 1","exists":"oui","brand":"","model":"","status":"bien","remark":""},{"description":"Tiroir 2","exists":"oui","brand":"","model":"","status":"bien","remark":""},{"description":"Tiroir 3","exists":"oui","brand":"","model":"","status":"bien","remark":""},{"description":"Tiroir 4","exists":"oui","brand":"","model":"","status":"bien","remark":""}]},{"sheet":"Etat équipement IT 2026 LBG Zei","number":"29881","name":"BK LBZ ZAER","equipment":[{"description":"PC Aloha Manager","exists":"oui","brand":"HP","model":"","status":"marche bien","remark":""},{"description":"Ecran","exists":"oui","brand":"DELL","model":"","status":"marche bien","remark":""},{"description":"Switch (armoire informatique)","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Imprimante","exists":"oui","brand":"canon","model":"","status":"marche bien","remark":""},{"description":"Routeur Bureau Manager","exists":"OUI","brand":"","model":"","status":"marche bien","remark":""},{"description":"Imprimante Godex (PTD)","exists":"oui","brand":"godex","model":"","status":"marche bien","remark":""},{"description":"Caisse 1","exists":"oui","brand":"ncr","model":"","status":"marche bien","remark":""},{"description":"Caisse 2","exists":"oui","brand":"ncr","model":"","status":"marche bien","remark":""},{"description":"Caisse 3","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 4","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 5","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 6","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 7","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 1","exists":"oui","brand":"radiant","model":"","status":"PARFOIS CA MARCHE PAS","remark":""},{"description":"Tiroir 2","exists":"oui","brand":"radiant","model":"","status":"marche bien","remark":""},{"description":"Tiroir 3","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 4","exists":"","brand":"","model":"","status":"","remark":""}]},{"sheet":"Etat équipement IT 2026 Marina ","number":"27046","name":"MARINA CASA","equipment":[{"description":"PC Aloha Manager","exists":"OUI","brand":"","model":"","status":"","remark":""},{"description":"Ecran","exists":"OUI","brand":"","model":"","status":"","remark":""},{"description":"Switch (armoire informatique)","exists":"OUI","brand":"","model":"","status":"","remark":""},{"description":"Imprimante","exists":"OUI","brand":"","model":"","status":"","remark":""},{"description":"Routeur Bureau Manager","exists":"OUI","brand":"","model":"","status":"","remark":""},{"description":"Imprimante Godex (PTD)","exists":"OUI","brand":"","model":"","status":"","remark":""},{"description":"Caisse 1","exists":"OUI","brand":"","model":"","status":"","remark":""},{"description":"Caisse 2","exists":"OUI","brand":"","model":"","status":"","remark":""},{"description":"Caisse 3","exists":"OUI","brand":"","model":"","status":"","remark":""},{"description":"Caisse 4","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 5","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 6","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 7","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 1","exists":"OUI","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 2","exists":"OUI","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 3","exists":"OUI","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 4","exists":"","brand":"","model":"","status":"","remark":""}]},{"sheet":"Etat équipement IT 2026 Laarach","number":"28611","name":"BK LAARACHE","equipment":[{"description":"PC Aloha Manager","exists":"OUI","brand":"","model":"","status":"Opérationnel","remark":""},{"description":"Ecran","exists":"OUI","brand":"","model":"","status":"Opérationnel","remark":""},{"description":"Switch (armoire informatique)","exists":"OUI","brand":"","model":"","status":"Opérationnel","remark":""},{"description":"Imprimante","exists":"OUI","brand":"","model":"","status":"Opérationnel","remark":""},{"description":"Routeur Bureau Manager","exists":"OUI","brand":"","model":"","status":"Opérationnel","remark":""},{"description":"Imprimante Godex (PTD)","exists":"OUI","brand":"","model":"","status":"Opérationnel","remark":""},{"description":"Caisse 1","exists":"OUI","brand":"","model":"","status":"Opérationnel","remark":"Dysfonctionnement du lecteur de cartes magnétiques"},{"description":"Caisse 2","exists":"OUI","brand":"","model":"","status":"Opérationnel","remark":"Besoin d'une troisième caisse pour les commandes Glovo"},{"description":"Caisse 3","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 4","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 5","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 6","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 7","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 1","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 2","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 3","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 4","exists":"","brand":"","model":"","status":"","remark":""}]},{"sheet":"Etat équipement IT 2026 Essalam","number":"","name":"BK ESSALAMA","equipment":[{"description":"PC Aloha Manager","exists":"OUI","brand":"HP","model":"","status":"BON ETAT","remark":""},{"description":"Ecran","exists":"OUI","brand":"HP","model":"","status":"BON ETAT","remark":""},{"description":"Switch (armoire informatique)","exists":"OUI","brand":"","model":"","status":"","remark":""},{"description":"Imprimante","exists":"OUI","brand":"CANON","model":"","status":"BON ETAT","remark":""},{"description":"Routeur Bureau Manager","exists":"OUI","brand":"","model":"","status":"BON ETAT","remark":""},{"description":"Imprimante Godex (PTD)","exists":"OUI","brand":"Godex","model":"","status":"BON ETAT","remark":""},{"description":"Caisse 1","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 2","exists":"OUI","brand":"NCR","model":"","status":"BON ETAT","remark":""},{"description":"Caisse 3","exists":"OUI","brand":"NCR","model":"","status":"BON ETAT","remark":""},{"description":"Caisse 4","exists":"OUI","brand":"NCR","model":"","status":"BON ETAT","remark":""},{"description":"Caisse 5","exists":"NON","brand":"","model":"","status":"","remark":"ENVOYE A BK MARINA SALE"},{"description":"Caisse 6","exists":"OUI","brand":"NCR","model":"","status":"BON ETAT","remark":""},{"description":"Caisse 7","exists":"OUI","brand":"NCR","model":"","status":"BON ETAT","remark":""},{"description":"Tiroir 1","exists":"OUI","brand":"","model":"","status":"BON ETAT","remark":""},{"description":"Tiroir 2","exists":"OUI","brand":"","model":"","status":"BON ETAT","remark":""},{"description":"Tiroir 3","exists":"OUI","brand":"","model":"","status":"BON ETAT","remark":""},{"description":"Tiroir 4","exists":"OUI","brand":"","model":"","status":"BON ETAT","remark":""}]},{"sheet":"Etat équipement IT 2026 Abdelmo","number":"26145","name":"BK ABDELMOUMEN","equipment":[{"description":"PC Aloha Manager","exists":"OUI","brand":"HP","model":"","status":"BIEN","remark":""},{"description":"Ecran","exists":"OUI","brand":"HP","model":"","status":"BIEN","remark":""},{"description":"Switch (armoire informatique)","exists":"OUI","brand":"","model":"","status":"BIEN","remark":"BESOIN D'ORGANISATION"},{"description":"Imprimante","exists":"OUI","brand":"CANON","model":"","status":"BIEN","remark":""},{"description":"Routeur Bureau Manager","exists":"OUI","brand":"HUAWEI","model":"","status":"BIEN","remark":""},{"description":"Imprimante Godex (PTD)","exists":"OUI","brand":"GODEX","model":"","status":"BIEN","remark":""},{"description":"Caisse 1","exists":"OUI","brand":"NCR","model":"","status":"BIEN","remark":""},{"description":"Caisse 2","exists":"OUI","brand":"NCR","model":"","status":"BIEN","remark":""},{"description":"Caisse 3","exists":"OUI","brand":"NCR","model":"","status":"BIEN","remark":""},{"description":"Caisse 4","exists":"NON","brand":"","model":"","status":"","remark":""},{"description":"Caisse 5","exists":"NON","brand":"","model":"","status":"","remark":""},{"description":"Caisse 6","exists":"NON","brand":"","model":"","status":"","remark":""},{"description":"Caisse 7","exists":"NON","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 1","exists":"OUI","brand":"","model":"","status":"BIEN","remark":""},{"description":"Tiroir 2","exists":"OUI","brand":"","model":"","status":"BIEN","remark":""},{"description":"Tiroir 3","exists":"OUI","brand":"","model":"","status":"BIEN","remark":""},{"description":"Tiroir 4","exists":"NON","brand":"","model":"","status":"","remark":""}]},{"sheet":"Etat équipement IT 2026 La faye","number":"24927","name":"LAFAYETTE","equipment":[{"description":"PC Aloha Manager","exists":"OUI","brand":"HP","model":"","status":"bien","remark":""},{"description":"Ecran","exists":"OUI","brand":"HP","model":"","status":"bien","remark":""},{"description":"Switch (armoire informatique)","exists":"OUI","brand":"","model":"","status":"bien","remark":""},{"description":"Imprimante","exists":"OUI","brand":"CANON","model":"","status":"bien","remark":""},{"description":"Routeur Bureau Manager","exists":"OUI","brand":"NOKIA","model":"","status":"bien","remark":""},{"description":"Imprimante Godex (PTD)","exists":"OUI","brand":"GODEX","model":"","status":"bien","remark":""},{"description":"Caisse 1","exists":"OUI","brand":"NCR","model":"","status":"bien","remark":""},{"description":"Caisse 2","exists":"OUI","brand":"NCR","model":"","status":"bien","remark":""},{"description":"Caisse 3","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 4","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 5","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 6","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 7","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 1","exists":"OUI","brand":"","model":"","status":"bien","remark":""},{"description":"Tiroir 2","exists":"OUI","brand":"","model":"","status":"bien","remark":""},{"description":"Tiroir 3","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 4","exists":"","brand":"","model":"","status":"","remark":""}]},{"sheet":"Etat équipement IT 2026 El Jadi","number":"25203","name":"BK ELJADIDA","equipment":[{"description":"PC Aloha Manager","exists":"O","brand":"HP","model":"","status":"BIEN","remark":""},{"description":"Ecran","exists":"O","brand":"DELL","model":"","status":"BIEN","remark":""},{"description":"Switch (armoire informatique)","exists":"O","brand":"ATTIC","model":"","status":"BIEN","remark":""},{"description":"Imprimante","exists":"O","brand":"HP","model":"","status":"Dysfonctionnement répété","remark":"Endommagée (besoin d'une nouvelle imprimante)"},{"description":"Routeur Bureau Manager","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Imprimante Godex (PTD)","exists":"O","brand":"GODEX","model":"","status":"BIEN","remark":""},{"description":"Caisse 1","exists":"O","brand":"NCR","model":"","status":"BIEN","remark":""},{"description":"Caisse 2","exists":"O","brand":"NCR","model":"","status":"BIEN","remark":""},{"description":"Caisse 3","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 4","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 5","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 6","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 7","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 1","exists":"O","brand":"NCR","model":"","status":"BIEN","remark":""},{"description":"Tiroir 2","exists":"O","brand":"NCR","model":"","status":"BIEN","remark":""},{"description":"Tiroir 3","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 4","exists":"","brand":"","model":"","status":"","remark":""}]},{"sheet":"Etat équipement IT 2026 Socco A","number":"23058","name":"BK SOCCO ALTO","equipment":[{"description":"PC Aloha Manager","exists":"OUI","brand":"","model":"","status":"BIEN","remark":""},{"description":"Ecran","exists":"OUI","brand":"","model":"","status":"BIEN","remark":""},{"description":"Switch (armoire informatique)","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Imprimante","exists":"OUI","brand":"","model":"","status":"BIEN","remark":""},{"description":"Routeur Bureau Manager","exists":"OUI","brand":"","model":"","status":"BIEN","remark":""},{"description":"Imprimante Godex (PTD)","exists":"OUI","brand":"","model":"","status":"BIEN","remark":""},{"description":"Caisse 1","exists":"OUI","brand":"","model":"","status":"","remark":"besoin d'intervention concernant l'installation des câbles du POS"},{"description":"Caisse 2","exists":"OUI","brand":"","model":"","status":"","remark":"besoin d'intervention concernant l'installation des câbles du POS"},{"description":"Caisse 3","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 4","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 5","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 6","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 7","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 1","exists":"OUI","brand":"","model":"","status":"BIEN","remark":""},{"description":"Tiroir 2","exists":"NO","brand":"","model":"","status":"","remark":"besoin d'un nouveau tiroir"},{"description":"Tiroir 3","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 4","exists":"","brand":"","model":"","status":"","remark":""}]},{"sheet":"Etat équipement IT 2026 Arribat","number":"ARRIBAT","name":"BK ARRIBAT CENTRE","equipment":[{"description":"PC Aloha Manager","exists":"OUI","brand":"","model":"","status":"fonctionnel","remark":""},{"description":"Ecran","exists":"OUI","brand":"","model":"","status":"fonctionnel","remark":""},{"description":"Switch (armoire informatique)","exists":"OUI","brand":"","model":"","status":"fonctionnel","remark":""},{"description":"Imprimante","exists":"OUI","brand":"","model":"","status":"infonctionnel","remark":"Actuellement, elle est complètement hors service."},{"description":"Routeur Bureau Manager","exists":"OUI","brand":"","model":"","status":"fonctionnel","remark":"Bloqué par fois"},{"description":"Imprimante Godex (PTD)","exists":"OUI","brand":"","model":"","status":"fonctionnel","remark":"Bloqué par fois"},{"description":"Caisse 1","exists":"OUI","brand":"","model":"","status":"fonctionnel","remark":"Bloqué par fois"},{"description":"Caisse 2","exists":"OUI","brand":"","model":"","status":"fonctionnel","remark":""},{"description":"Caisse 3","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 4","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 5","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 6","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 7","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 1","exists":"OUI","brand":"","model":"","status":"fonctionnel","remark":"Bloqué par fois"},{"description":"Tiroir 2","exists":"OUI","brand":"","model":"","status":"fonctionnel","remark":""},{"description":"Tiroir 3","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 4","exists":"","brand":"","model":"","status":"","remark":""}]},{"sheet":"Etat équipement IT 2026 Tetouan","number":"28219","name":"BK TETOUAN CARREFOUR","equipment":[{"description":"PC Aloha Manager","exists":"oui","brand":"hp","model":"","status":"bien","remark":""},{"description":"Ecran","exists":"oui","brand":"hp","model":"","status":"bien","remark":""},{"description":"Switch (armoire informatique)","exists":"oui","brand":"","model":"","status":"bien","remark":""},{"description":"Imprimante","exists":"oui","brand":"canon","model":"","status":"bien","remark":""},{"description":"Routeur Bureau Manager","exists":"oui","brand":"","model":"","status":"bien","remark":""},{"description":"Imprimante Godex (PTD)","exists":"oui","brand":"energy star","model":"","status":"bien","remark":""},{"description":"Caisse 1","exists":"oui","brand":"","model":"","status":"bien","remark":""},{"description":"Caisse 2","exists":"oui","brand":"","model":"","status":"bien","remark":""},{"description":"Caisse 3","exists":"oui","brand":"","model":"","status":"bien","remark":""},{"description":"Caisse 4","exists":"oui","brand":"","model":"","status":"bien","remark":""},{"description":"Caisse 5","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 6","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 7","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 1","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 2","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 3","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 4","exists":"","brand":"","model":"","status":"","remark":""}]},{"sheet":"Etat équipement IT 2026 Mahaj R","number":"27785","name":"MAHAJ RIAD","equipment":[{"description":"PC Aloha Manager","exists":"Oui","brand":"HP","model":"","status":"En Marche","remark":"RAS"},{"description":"Ecran","exists":"Oui","brand":"DELL","model":"","status":"En Marche","remark":"RAS"},{"description":"Switch (armoire informatique)","exists":"Oui","brand":"EATON 9E","model":"","status":"En Marche","remark":"RAS"},{"description":"Imprimante","exists":"Oui","brand":"CANON","model":"","status":"En Marche","remark":"RAS"},{"description":"Routeur Bureau Manager","exists":"Oui","brand":"NOKIA","model":"","status":"En Marche","remark":"RAS"},{"description":"Imprimante Godex (PTD)","exists":"Oui","brand":"GODEX","model":"","status":"En Marche","remark":"RAS"},{"description":"Caisse 1","exists":"Oui","brand":"NCR","model":"","status":"En Marche","remark":"RAS"},{"description":"Caisse 2","exists":"Oui","brand":"NCR","model":"","status":"En Marche","remark":"RAS"},{"description":"Caisse 3","exists":"Oui","brand":"NCR","model":"","status":"En Marche","remark":"RAS"},{"description":"Caisse 4","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 5","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 6","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 7","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 1","exists":"Oui","brand":"NCR CORPORATION","model":"","status":"En Marche","remark":"RAS"},{"description":"Tiroir 2","exists":"Oui","brand":"NCR CORPORATION","model":"","status":"En Marche","remark":"RAS"},{"description":"Tiroir 3","exists":"Oui","brand":"NCR CORPORATION","model":"","status":"En Marche","remark":"RAS"},{"description":"Tiroir 4","exists":"","brand":"","model":"","status":"","remark":""}]},{"sheet":"Etat équipement IT 2026 Anfa","number":"27719","name":"BK BD ANFA","equipment":[{"description":"PC Aloha Manager","exists":"oui","brand":"HP","model":"I5","status":"Bien","remark":"rempli"},{"description":"Ecran","exists":"oui","brand":"","model":"","status":"","remark":""},{"description":"Switch (armoire informatique)","exists":"oui","brand":"","model":"","status":"","remark":""},{"description":"Imprimante","exists":"oui","brand":"","model":"","status":"","remark":""},{"description":"Routeur Bureau Manager","exists":"oui","brand":"","model":"","status":"","remark":""},{"description":"Imprimante Godex (PTD)","exists":"oui","brand":"","model":"","status":"","remark":""},{"description":"Caisse 1","exists":"oui","brand":"","model":"","status":"","remark":""},{"description":"Caisse 2","exists":"oui","brand":"","model":"","status":"","remark":""},{"description":"Caisse 3","exists":"oui","brand":"","model":"","status":"","remark":""},{"description":"Caisse 4","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 5","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 6","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 7","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 1","exists":"oui","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 2","exists":"oui","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 3","exists":"oui","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 4","exists":"","brand":"","model":"","status":"","remark":""}]},{"sheet":"Etat équipement IT 2026 Mohamme","number":"27704","name":"BK MOHAMMADIA","equipment":[{"description":"PC Aloha Manager","exists":"OUI","brand":"hp","model":"","status":"Bon","remark":""},{"description":"Ecran","exists":"OUI","brand":"Thinkvision","model":"","status":"Bon","remark":""},{"description":"Switch (armoire informatique)","exists":"OUI","brand":"","model":"","status":"Bon","remark":""},{"description":"Imprimante","exists":"OUI","brand":"Canon","model":"","status":"Bon","remark":""},{"description":"Routeur Bureau Manager","exists":"OUI","brand":"ZTE","model":"","status":"Bon","remark":""},{"description":"Imprimante Godex (PTD)","exists":"OUI","brand":"","model":"","status":"Bon","remark":""},{"description":"Caisse 1","exists":"OUI","brand":"","model":"","status":"Bon","remark":""},{"description":"Caisse 2","exists":"OUI","brand":"","model":"","status":"Bon","remark":"L'écran client de la caisse n'affiche plus les commandes lors de l'encaissement"},{"description":"Caisse 3","exists":"OUI","brand":"","model":"","status":"Bon","remark":""},{"description":"Caisse 4","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 5","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 6","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 7","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 1","exists":"OUI","brand":"","model":"","status":"Bon","remark":""},{"description":"Tiroir 2","exists":"OUI","brand":"","model":"","status":"Bon","remark":""},{"description":"Tiroir 3","exists":"OUI","brand":"","model":"","status":"Bon","remark":""},{"description":"Tiroir 4","exists":"","brand":"","model":"","status":"","remark":""}]},{"sheet":"Etat équipement IT 2026 Settat","number":"32094","name":"BK SETTAT","equipment":[{"description":"PC Aloha Manager","exists":"O","brand":"HP","model":"","status":"BIEN","remark":""},{"description":"Ecran","exists":"O","brand":"HP","model":"","status":"BIEN","remark":""},{"description":"Switch (armoire informatique)","exists":"O","brand":"SMART LINK","model":"","status":"BIEN","remark":""},{"description":"Imprimante","exists":"O","brand":"CANON","model":"","status":"BIEN","remark":""},{"description":"Routeur Bureau Manager","exists":"O","brand":"ZTE","model":"","status":"BIEN","remark":""},{"description":"Imprimante Godex (PTD)","exists":"O","brand":"GODEX","model":"","status":"BIEN","remark":""},{"description":"Caisse 1","exists":"N","brand":"","model":"","status":"","remark":""},{"description":"Caisse 2","exists":"O","brand":"NCR","model":"","status":"BIEN","remark":""},{"description":"Caisse 3","exists":"O","brand":"NCR","model":"","status":"BIEN","remark":""},{"description":"Caisse 4","exists":"O","brand":"NCR","model":"","status":"BIEN","remark":""},{"description":"Caisse 5","exists":"O","brand":"NCR","model":"","status":"BIEN","remark":""},{"description":"Caisse 6","exists":"O","brand":"NCR","model":"","status":"BIEN","remark":""},{"description":"Caisse 7","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 1","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 2","exists":"O","brand":"","model":"","status":"BIEN","remark":""},{"description":"Tiroir 3","exists":"O","brand":"","model":"","status":"BIEN","remark":""},{"description":"Tiroir 4","exists":"O","brand":"","model":"","status":"BIEN","remark":""}]},{"sheet":"Etat équipement IT 2026 Marin_1","number":"29877","name":"BK MARINA SALE","equipment":[{"description":"PC Aloha Manager","exists":"OUI","brand":"hp","model":"","status":"BIEN","remark":""},{"description":"Ecran","exists":"OUI","brand":"SAMSUNG","model":"","status":"BIEN","remark":""},{"description":"Switch (armoire informatique)","exists":"OUI","brand":"HIK VISON","model":"","status":"EN PANNE","remark":"ON A UN PROBLEM DE MUSUIQUE"},{"description":"Imprimante","exists":"OUI","brand":"hp","model":"","status":"BIEN","remark":""},{"description":"Routeur Bureau Manager","exists":"OUI","brand":"NOKIA","model":"","status":"BIEN","remark":""},{"description":"Imprimante Godex (PTD)","exists":"OUI","brand":"GODEX","model":"","status":"BIEN","remark":""},{"description":"Caisse 1","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 2","exists":"OUI","brand":"NCR","model":"","status":"BIEN","remark":""},{"description":"Caisse 3","exists":"OUI","brand":"NCR","model":"","status":"BIEN","remark":""},{"description":"Caisse 4","exists":"OUI","brand":"NCR","model":"","status":"BIEN","remark":""},{"description":"Caisse 5","exists":"OUI","brand":"NCR","model":"","status":"BIEN","remark":""},{"description":"Caisse 6","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 7","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 1","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 2","exists":"OUI","brand":"NSR CORPORATION","model":"","status":"BIEN","remark":""},{"description":"Tiroir 3","exists":"OUI","brand":"NSR CORPORATION","model":"","status":"BIEN","remark":""},{"description":"Tiroir 4","exists":"OUI","brand":"NSR CORPORATION","model":"","status":"BIEN","remark":""}]},{"sheet":"Etat équipement IT 2026 Exit Ca","number":"","name":"BK EXIT CASA","equipment":[{"description":"PC Aloha Manager","exists":"OUI","brand":"HP","model":"","status":"BIEN","remark":""},{"description":"Ecran","exists":"OUI","brand":"HP","model":"","status":"BIEN","remark":""},{"description":"Switch (armoire informatique)","exists":"OUI","brand":"HP","model":"","status":"BIEN","remark":""},{"description":"Imprimante","exists":"OUI","brand":"CANON","model":"","status":"BIEN","remark":""},{"description":"Routeur Bureau Manager","exists":"OUI","brand":"NOKIA","model":"","status":"BIEN","remark":""},{"description":"Imprimante Godex (PTD)","exists":"OUI","brand":"GODEX","model":"","status":"BIEN","remark":""},{"description":"Caisse 1","exists":"OUI","brand":"NCR","model":"","status":"BIEN","remark":""},{"description":"Caisse 2","exists":"OUI","brand":"NCR","model":"","status":"BIEN","remark":""},{"description":"Caisse 3","exists":"OUI","brand":"NCR","model":"","status":"BIEN","remark":""},{"description":"Caisse 4","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 5","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 6","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 7","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 1","exists":"OUI","brand":"NCR","model":"","status":"BIEN","remark":""},{"description":"Tiroir 2","exists":"OUI","brand":"NCR","model":"","status":"BIEN","remark":""},{"description":"Tiroir 3","exists":"OUI","brand":"NCR","model":"","status":"BIEN","remark":""},{"description":"Tiroir 4","exists":"","brand":"","model":"","status":"","remark":""}]},{"sheet":"Etat équipement IT 2026 Sidi Ma","number":"23002","name":"BK SIDI MAAROUF","equipment":[{"description":"PC Aloha Manager","exists":"OUI","brand":"HP","model":"","status":"BIEN","remark":""},{"description":"Ecran","exists":"OUI","brand":"HP","model":"","status":"BIEN","remark":""},{"description":"Switch (armoire informatique)","exists":"OUI","brand":"HP","model":"","status":"BIEN","remark":""},{"description":"Imprimante","exists":"OUI","brand":"CANON","model":"","status":"BIEN","remark":""},{"description":"Routeur Bureau Manager","exists":"OUI","brand":"ZTE","model":"","status":"BIEN","remark":""},{"description":"Imprimante Godex (PTD)","exists":"OUI","brand":"GODEX","model":"","status":"BIEN","remark":""},{"description":"Caisse 1","exists":"OUI","brand":"NCR","model":"","status":"BIEN","remark":""},{"description":"Caisse 2","exists":"OUI","brand":"NCR","model":"","status":"BIEN","remark":""},{"description":"Caisse 3","exists":"OUI","brand":"NCR","model":"","status":"BIEN","remark":""},{"description":"Caisse 4","exists":"OUI","brand":"NCR","model":"","status":"BIEN","remark":""},{"description":"Caisse 5","exists":"NON","brand":"","model":"","status":"","remark":""},{"description":"Caisse 6","exists":"NON","brand":"","model":"","status":"","remark":""},{"description":"Caisse 7","exists":"NON","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 1","exists":"OUI","brand":"","model":"","status":"BIEN","remark":""},{"description":"Tiroir 2","exists":"OUI","brand":"","model":"","status":"BIEN","remark":""},{"description":"Tiroir 3","exists":"OUI","brand":"","model":"","status":"BIEN","remark":""},{"description":"Tiroir 4","exists":"OUI","brand":"","model":"","status":"BIEN","remark":""}]},{"sheet":"Etat équipement IT 2026 Albayda","number":"","name":"BK RELAIS AL BAIDA","equipment":[{"description":"PC Aloha Manager","exists":"oui","brand":"","model":"","status":"bien","remark":""},{"description":"Ecran","exists":"oui","brand":"","model":"","status":"bien","remark":""},{"description":"Switch (armoire informatique)","exists":"oui","brand":"","model":"","status":"bien","remark":""},{"description":"Imprimante","exists":"oui","brand":"","model":"","status":"bien","remark":""},{"description":"Routeur Bureau Manager","exists":"oui","brand":"","model":"","status":"","remark":"LE RTOUR FONCTION DE MANIÈRE INSTABLE PARFOIS OUI PARFOIS NON"},{"description":"Imprimante Godex (PTD)","exists":"oui","brand":"","model":"","status":"bien","remark":""},{"description":"Caisse 1","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 2","exists":"oui","brand":"","model":"","status":"bien","remark":""},{"description":"Caisse 3","exists":"oui","brand":"","model":"","status":"bien","remark":""},{"description":"Caisse 4","exists":"oui","brand":"","model":"","status":"bien","remark":""},{"description":"Caisse 5","exists":"oui","brand":"","model":"","status":"bien","remark":""},{"description":"Caisse 6","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 7","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 1","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 2","exists":"oui","brand":"","model":"","status":"bien","remark":""},{"description":"Tiroir 3","exists":"oui","brand":"","model":"","status":"bien","remark":""},{"description":"Tiroir 4","exists":"oui","brand":"","model":"","status":"bien","remark":""}]},{"sheet":"Etat équipement IT 2026 Dar Bou","number":"27706","name":"BK DAR BOUAZZA","equipment":[{"description":"PC Aloha Manager","exists":"OUI","brand":"HP","model":"","status":"bien","remark":""},{"description":"Ecran","exists":"OUI","brand":"","model":"","status":"bien","remark":""},{"description":"Switch (armoire informatique)","exists":"OUI","brand":"","model":"","status":"bien","remark":""},{"description":"Imprimante","exists":"OUI","brand":"","model":"","status":"bien","remark":""},{"description":"Routeur Bureau Manager","exists":"OUI","brand":"","model":"","status":"bien","remark":""},{"description":"Imprimante Godex (PTD)","exists":"OUI","brand":"","model":"","status":"bien","remark":""},{"description":"Caisse 1","exists":"OUI","brand":"","model":"","status":"bien","remark":""},{"description":"Caisse 2","exists":"OUI","brand":"","model":"","status":"bien","remark":""},{"description":"Caisse 3","exists":"OUI","brand":"","model":"","status":"bien","remark":""},{"description":"Caisse 4","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 5","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 6","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 7","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 1","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 2","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 3","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 4","exists":"","brand":"","model":"","status":"","remark":""}]},{"sheet":"Etat équipement IT 2026 Maarif","number":"20648","name":"BK MAARIF","equipment":[{"description":"PC Aloha Manager","exists":"OUI","brand":"","model":"","status":"BIEN","remark":""},{"description":"Ecran","exists":"OUI","brand":"","model":"","status":"BIEN","remark":""},{"description":"Switch (armoire informatique)","exists":"OUI","brand":"","model":"","status":"BIEN","remark":""},{"description":"Imprimante","exists":"OUI","brand":"","model":"","status":"BIEN","remark":""},{"description":"Routeur Bureau Manager","exists":"OUI","brand":"","model":"","status":"BIEN","remark":""},{"description":"Imprimante Godex (PTD)","exists":"OUI","brand":"","model":"","status":"BIEN","remark":""},{"description":"Caisse 1","exists":"OUI","brand":"","model":"","status":"BIEN","remark":""},{"description":"Caisse 2","exists":"OUI","brand":"","model":"","status":"BIEN","remark":""},{"description":"Caisse 3","exists":"OUI","brand":"","model":"","status":"BIEN","remark":""},{"description":"Caisse 4","exists":"NON","brand":"","model":"","status":"","remark":""},{"description":"Caisse 5","exists":"NON","brand":"","model":"","status":"","remark":""},{"description":"Caisse 6","exists":"NON","brand":"","model":"","status":"","remark":""},{"description":"Caisse 7","exists":"NON","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 1","exists":"OUI","brand":"","model":"","status":"BIEN","remark":""},{"description":"Tiroir 2","exists":"OUI","brand":"","model":"","status":"BIEN","remark":""},{"description":"Tiroir 3","exists":"OUI","brand":"","model":"","status":"BIEN","remark":""},{"description":"Tiroir 4","exists":"NON","brand":"","model":"","status":"","remark":""}]},{"sheet":"Etat équipement IT 2026 Carre E","number":"21164","name":"BK CARRE EDEN","equipment":[{"description":"PC Aloha Manager","exists":"oui","brand":"HP","model":"","status":"marche","remark":""},{"description":"Ecran","exists":"oui","brand":"HP","model":"","status":"marche","remark":""},{"description":"Switch (armoire informatique)","exists":"oui","brand":"","model":"","status":"marche","remark":""},{"description":"Imprimante","exists":"oui","brand":"HP","model":"","status":"marche","remark":""},{"description":"Routeur Bureau Manager","exists":"OUI","brand":"NOKIA","model":"","status":"","remark":""},{"description":"Imprimante Godex (PTD)","exists":"oui","brand":"GODEX","model":"","status":"marche","remark":""},{"description":"Caisse 1","exists":"oui","brand":"","model":"","status":"marche","remark":""},{"description":"Caisse 2","exists":"oui","brand":"","model":"","status":"marche","remark":""},{"description":"Caisse 3","exists":"oui","brand":"","model":"","status":"marche","remark":""},{"description":"Caisse 4","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 5","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 6","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 7","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 1","exists":"oui","brand":"","model":"","status":"marche","remark":""},{"description":"Tiroir 2","exists":"oui","brand":"","model":"","status":"marche","remark":""},{"description":"Tiroir 3","exists":"oui","brand":"","model":"","status":"marche","remark":""},{"description":"Tiroir 4","exists":"","brand":"","model":"","status":"","remark":""}]},{"sheet":"Etat équipement IT 2026 Al Maza","number":"22870","name":"BK AL MAZAR","equipment":[{"description":"PC Aloha Manager","exists":"OUI","brand":"HP","model":"","status":"EN MARCHE","remark":""},{"description":"Ecran","exists":"OUI","brand":"THINKVISION","model":"","status":"EN MARCHE","remark":""},{"description":"Switch (armoire informatique)","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Imprimante","exists":"OUI","brand":"","model":"","status":"EN PANNE","remark":"EN ATTENTE DE RÉPARATION"},{"description":"Routeur Bureau Manager","exists":"OUI","brand":"","model":"","status":"EN MARCHE","remark":""},{"description":"Imprimante Godex (PTD)","exists":"OUI","brand":"GODEX","model":"","status":"EN MARCHE","remark":""},{"description":"Caisse 1","exists":"OUI","brand":"NCR","model":"","status":"EN MARCHE","remark":""},{"description":"Caisse 2","exists":"OUI","brand":"NCR","model":"","status":"EN MARCHE","remark":""},{"description":"Caisse 3","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 4","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 5","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 6","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 7","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 1","exists":"OUI","brand":"","model":"","status":"CASSÉ","remark":""},{"description":"Tiroir 2","exists":"OUI","brand":"","model":"","status":"CASSÉ","remark":""},{"description":"Tiroir 3","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 4","exists":"","brand":"","model":"","status":"","remark":""}]},{"sheet":"Etat équipement IT 2026 Relai_1","number":"31723","name":"BK OLA","equipment":[{"description":"PC Aloha Manager","exists":"OUI","brand":"HP","model":"","status":"","remark":""},{"description":"Ecran","exists":"OUI","brand":"DELL","model":"","status":"","remark":""},{"description":"Switch (armoire informatique)","exists":"OUI","brand":"","model":"","status":"","remark":""},{"description":"Imprimante","exists":"OUI","brand":"CANON","model":"","status":"","remark":""},{"description":"Routeur Bureau Manager","exists":"OUI","brand":"INWI","model":"","status":"","remark":""},{"description":"Imprimante Godex (PTD)","exists":"OUI","brand":"GODEX","model":"","status":"","remark":""},{"description":"Caisse 1","exists":"NON","brand":"","model":"","status":"","remark":""},{"description":"Caisse 2","exists":"OUI","brand":"NCR","model":"","status":"BIEN","remark":""},{"description":"Caisse 3","exists":"OUI","brand":"NCR","model":"","status":"Ne Fonctionnent pas","remark":"Hors Service - en attente de réparation"},{"description":"Caisse 4","exists":"OUI","brand":"NCR","model":"","status":"BIEN","remark":""},{"description":"Caisse 5","exists":"OUI","brand":"NCR","model":"","status":"BIEN","remark":""},{"description":"Caisse 6","exists":"OUI","brand":"NCR","model":"","status":"Ne Fonctionnent pas","remark":"1 drive problème check out"},{"description":"Caisse 7","exists":"NON","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 1","exists":"NON","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 2","exists":"OUI","brand":"NCR","model":"","status":"BIEN","remark":""},{"description":"Tiroir 3","exists":"OUI","brand":"NCR","model":"","status":"BIEN","remark":""},{"description":"Tiroir 4","exists":"OUI","brand":"NCR","model":"","status":"BIEN","remark":""}]},{"sheet":"Etat équipement IT 2026 Anfa Pl","number":"19208","name":"BK ANFA PLACE","equipment":[{"description":"PC Aloha Manager","exists":"OUI","brand":"HP","model":"","status":"FONCTIONNEL","remark":"RAS"},{"description":"Ecran","exists":"OUI","brand":"HP","model":"","status":"FONCTIONNEL","remark":"RAS"},{"description":"Switch (armoire informatique)","exists":"OUI","brand":"HP","model":"","status":"FONCTIONNEL","remark":"RAS"},{"description":"Imprimante","exists":"OUI","brand":"CANON","model":"","status":"FONCTIONNEL","remark":"RAS"},{"description":"Routeur Bureau Manager","exists":"OUI","brand":"HUAWEI","model":"","status":"FONCTIONNEL","remark":"RAS"},{"description":"Imprimante Godex (PTD)","exists":"OUI","brand":"GODEX","model":"","status":"FONCTIONNEL","remark":"RAS"},{"description":"Caisse 1","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 2","exists":"OUI","brand":"NCR","model":"","status":"FONCTIONNEL","remark":"RAS"},{"description":"Caisse 3","exists":"OUI","brand":"NCR","model":"","status":"FONCTIONNEL","remark":"RAS"},{"description":"Caisse 4","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 5","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 6","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 7","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 1","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 2","exists":"OUI","brand":"","model":"","status":"FONCTIONNEL","remark":"RAS"},{"description":"Tiroir 3","exists":"OUI","brand":"","model":"","status":"FONCTIONNEL","remark":"RAS"},{"description":"Tiroir 4","exists":"","brand":"","model":"","status":"","remark":""}]},{"sheet":"Etat équipement IT 2026 Ibn Bat","number":"28216","name":"BK IBN BATTOUTA","equipment":[{"description":"PC Aloha Manager","exists":"OUI","brand":"HP","model":"","status":"Fonctionnelle","remark":""},{"description":"Ecran","exists":"OUI","brand":"DELL","model":"","status":"Fonctionnelle","remark":""},{"description":"Switch (armoire informatique)","exists":"OUI","brand":"","model":"","status":"Fonctionnelle","remark":""},{"description":"Imprimante","exists":"OUI","brand":"CANON","model":"","status":"Fonctionnelle","remark":""},{"description":"Routeur Bureau Manager","exists":"OUI","brand":"","model":"","status":"Fonctionnelle","remark":""},{"description":"Imprimante Godex (PTD)","exists":"OUI","brand":"","model":"","status":"Fonctionnelle","remark":""},{"description":"Anduleur","exists":"OUI","brand":"","model":"","status":"Non Fonctionnelle","remark":""},{"description":"Caisse 1","exists":"OUI","brand":"NCR","model":"","status":"Fonctionnelle","remark":""},{"description":"Caisse 2","exists":"OUI","brand":"NCR","model":"","status":"Fonctionnelle","remark":""},{"description":"Caisse 3","exists":"OUI","brand":"NCR","model":"","status":"En arret (Fonctionnelle)","remark":""},{"description":"Caisse 4","exists":"OUI","brand":"NCR","model":"","status":"NON Utilisé","remark":""},{"description":"Caisse 5","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 6","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 7","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 1","exists":"OUI","brand":"NCR","model":"","status":"Fonctionnelle","remark":""},{"description":"Tiroir 2","exists":"OUI","brand":"NCR","model":"","status":"Fonctionnelle","remark":""},{"description":"Tiroir 3","exists":"OUI","brand":"NCR","model":"","status":"non Fonctionnelle","remark":"Probleme technique"},{"description":"Tiroir 4","exists":"NON","brand":"","model":"","status":"","remark":""}]},{"sheet":"Etat équipement IT 2026 Relai_2","number":"29874","name":"BK RELAIS TANGER","equipment":[{"description":"PC Aloha Manager","exists":"oui","brand":"Hp","model":"","status":"Bien","remark":""},{"description":"Ecran","exists":"oui","brand":"Dell","model":"","status":"Bien","remark":""},{"description":"Switch (armoire informatique)","exists":"oui","brand":"","model":"","status":"Bien","remark":""},{"description":"Imprimante","exists":"oui","brand":"Canon","model":"","status":"Bien","remark":""},{"description":"Routeur Bureau Manager","exists":"oui","brand":"Maroc telecome","model":"","status":"Bien","remark":""},{"description":"Imprimante Godex (PTD)","exists":"oui","brand":"Godex","model":"","status":"Besoin de reparation ou changement","remark":"le connecteur est cassé"},{"description":"Caisse 1","exists":"oui","brand":"Ncr","model":"","status":"Bien","remark":""},{"description":"Caisse 2","exists":"oui","brand":"Ncr","model":"","status":"Bien","remark":""},{"description":"Caisse 3","exists":"oui","brand":"Ncr","model":"","status":"Bien","remark":""},{"description":"Caisse 4","exists":"oui","brand":"Ncr","model":"","status":"Bien","remark":""},{"description":"Caisse 5","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 6","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 7","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 1","exists":"oui","brand":"","model":"","status":"Bien","remark":""},{"description":"Tiroir 2","exists":"oui","brand":"","model":"","status":"Bien","remark":""},{"description":"Tiroir 3","exists":"oui","brand":"","model":"","status":"Bien","remark":""},{"description":"Tiroir 4","exists":"oui","brand":"","model":"","status":"Bien","remark":""}]},{"sheet":"Etat équipement IT 2026 BORJ FE","number":"19336","name":"BK BORJ FEZ","equipment":[{"description":"PC Aloha Manager","exists":"on","brand":"Hp","model":"","status":"ok","remark":""},{"description":"Ecran","exists":"on","brand":"ThinkVision","model":"","status":"ok","remark":""},{"description":"Switch (armoire informatique)","exists":"on","brand":"hp","model":"","status":"ok","remark":""},{"description":"Imprimante","exists":"on","brand":"canon","model":"","status":"Instable","remark":"L'imprimante fonctionne mais plante parfois"},{"description":"Routeur Bureau Manager","exists":"on","brand":"huawei","model":"","status":"ok","remark":""},{"description":"Imprimante Godex (PTD)","exists":"on","brand":"Godex","model":"","status":"ok","remark":""},{"description":"Caisse 1","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 2","exists":"on","brand":"NCR","model":"","status":"OK","remark":""},{"description":"Caisse 3","exists":"on","brand":"NCR","model":"","status":"OK","remark":""},{"description":"Caisse 4","exists":"on","brand":"NCR","model":"","status":"OK","remark":""},{"description":"Caisse 5","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 6","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 7","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 1","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 2","exists":"on","brand":"NCR","model":"","status":"Instable","remark":"plante parois"},{"description":"Tiroir 3","exists":"on","brand":"NCR","model":"","status":"ok","remark":""},{"description":"Tiroir 4","exists":"on","brand":"NCR","model":"","status":"ok","remark":""}]},{"sheet":"Etat équipement IT 2026 Morocco","number":"","name":"BK MOROCCO MALL","equipment":[{"description":"PC Aloha Manager","exists":"OUI","brand":"HP","model":"","status":"CA MARCHE","remark":""},{"description":"Ecran","exists":"OUI","brand":"DELL","model":"","status":"CA MARCHE","remark":""},{"description":"Switch (armoire informatique)","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Imprimante","exists":"OUI","brand":"LASER JET M203DN","model":"","status":"CA MARCHE","remark":""},{"description":"Routeur Bureau Manager","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Imprimante Godex (PTD)","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 1","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 2","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 3","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 4","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 5","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 6","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 7","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 1","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 2","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 3","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 4","exists":"","brand":"","model":"","status":"","remark":""}]},{"sheet":"Etat équipement IT 2026 Menara ","number":"","name":"BK MENARA","equipment":[{"description":"PC Aloha Manager","exists":"OUI","brand":"HP","model":"","status":"Normal","remark":""},{"description":"Ecran","exists":"OUI","brand":"HP","model":"","status":"Normal","remark":""},{"description":"Switch (armoire informatique)","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Imprimante","exists":"OUI","brand":"Canon","model":"","status":"Normal","remark":""},{"description":"Routeur Bureau Manager","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Imprimante Godex (PTD)","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 1","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 2","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 3","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 4","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 5","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 6","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Caisse 7","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 1","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 2","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 3","exists":"","brand":"","model":"","status":"","remark":""},{"description":"Tiroir 4","exists":"","brand":"","model":"","status":"","remark":""}]}];
+
+const FAIL_WORDS = ['panne','hors service','infonctionnel','ne fonctionne','marche pas','dysfonction','instable','cassé','non fonctionn','endommagé','problème','réparation','reparation','besoin de changement'];
+const WARN_WORDS = ['parfois','bloqué','instable','besoin','organisation','lourd'];
+
+function classify(item) {
+  const s = (item.status + ' ' + item.remark).toLowerCase();
+  if (!item.exists || item.exists.trim() === '') return 'na';
+  const noWords = ['non','no','n','0','nope'];
+  if (noWords.includes(item.exists.trim().toLowerCase())) return 'na';
+  for (const w of FAIL_WORDS) if (s.includes(w)) return 'fail';
+  for (const w of WARN_WORDS) if (s.includes(w)) return 'warn';
+  return 'ok';
+}
+
+function badgeClass(cls) {
+  return cls === 'ok' ? 'badge-ok' : cls === 'warn' ? 'badge-warn' : cls === 'fail' ? 'badge-fail' : 'badge-na';
+}
+function badgeLabel(cls) {
+  return cls === 'ok' ? '✓ OK' : cls === 'warn' ? '⚠ Attention' : cls === 'fail' ? '✕ En panne' : '— N/A';
+}
+
+const data = RAW.map(r => ({
+  ...r,
+  equip: r.equipment.filter(e => e.description && e.description.trim() !== '').map(e => ({...e, cls: classify(e)}))
+}));
+
+const select = document.getElementById('restSelect');
+data.forEach((r, i) => {
+  const opt = document.createElement('option');
+  opt.value = i;
+  opt.textContent = (r.number ? `#${r.number} — ` : '') + r.name;
+  select.appendChild(opt);
+});
+
+function renderStats(list) {
+  let total = 0, ok = 0, warn = 0, fail = 0, withIssues = 0;
+  list.forEach(r => {
+    r.equip.forEach(e => {
+      if (e.cls === 'na') return;
+      total++;
+      if (e.cls === 'ok') ok++;
+      if (e.cls === 'warn') warn++;
+      if (e.cls === 'fail') fail++;
+    });
+    if (r.equip.some(e => e.cls === 'fail')) withIssues++;
+  });
+  document.getElementById('statsBar').innerHTML = `
+    <div class="stat-card"><div class="val">${list.length}</div><div class="lbl">Restaurants</div></div>
+    <div class="stat-card"><div class="val">${total}</div><div class="lbl">Équipements</div></div>
+    <div class="stat-card green"><div class="val">${ok}</div><div class="lbl">Opérationnels</div></div>
+    <div class="stat-card amber"><div class="val">${warn}</div><div class="lbl">À surveiller</div></div>
+    <div class="stat-card red"><div class="val">${fail}</div><div class="lbl">En panne</div></div>
+    <div class="stat-card red"><div class="val">${withIssues}</div><div class="lbl">Sites avec pannes</div></div>`;
+}
+
+function groupEquip(equip) {
+  const groups = {'Bureau':[], 'Caisses':[], 'Tiroirs':[], 'Autres':[]};
+  equip.forEach(e => {
+    const d = e.description.toLowerCase();
+    if (d.startsWith('caisse')) groups['Caisses'].push(e);
+    else if (d.startsWith('tiroir')) groups['Tiroirs'].push(e);
+    else if (['pc aloha','ecran','switch','imprimante','routeur'].some(k => d.includes(k))) groups['Bureau'].push(e);
+    else groups['Autres'].push(e);
+  });
+  return groups;
+}
+
+function renderEquipItem(e) {
+  const cls = e.cls;
+  const isWarnRemark = e.remark && WARN_WORDS.some(w => e.remark.toLowerCase().includes(w));
+  const isFailRemark = e.remark && FAIL_WORDS.some(w => e.remark.toLowerCase().includes(w));
+  return `<div class="equip-item">
+    <div class="equip-item-name">
+      <span>${e.description}</span>
+      <span class="badge ${badgeClass(cls)}">${badgeLabel(cls)}</span>
     </div>
+    ${e.brand ? `<div class="equip-row"><span class="equip-chip brand">${e.brand.toUpperCase()}</span>${e.model ? `<span class="equip-chip">${e.model}</span>` : ''}</div>` : ''}
+    ${e.status && e.status.trim() ? `<div class="equip-row"><span class="equip-chip">${e.status}</span></div>` : ''}
+    ${e.remark && e.remark.trim() && e.remark.toLowerCase() !== 'ras' ? `<div class="remark-box${isFailRemark ? ' danger' : ''}">💬 ${e.remark}</div>` : ''}
+  </div>`;
+}
 
-    <script>
-        const SHEET_ID = '1FiYgCercDwkzpkLDTQe51y_S9NbcBP8Nd_vG26E8y5Q'; 
-        
-        const SHEET_NAMES = [
-            'Etat équipement IT 2026 Techfin',
-            'Etat équipement IT 2026 Temara',
-            'Etat équipement IT 2026 Relais',
-            'Etat équipement IT 2026 Agdal'
-        ];
+function renderSingle(r) {
+  const groups = groupEquip(r.equip);
+  const issues = r.equip.filter(e => e.cls !== 'ok' && e.cls !== 'na');
+  let html = `<div class="rest-header">
+    <div>
+      <div class="rest-name">${r.name}</div>
+      ${r.number ? `<div class="rest-num">Numéro restaurant: ${r.number}</div>` : ''}
+      <div class="rest-pills" style="margin-top:10px">
+        ${r.equip.filter(e=>e.cls!=='na').length ? `<span class="badge badge-ok">✓ ${r.equip.filter(e=>e.cls==='ok').length} OK</span>` : ''}
+        ${r.equip.filter(e=>e.cls==='warn').length ? `<span class="badge badge-warn">⚠ ${r.equip.filter(e=>e.cls==='warn').length} Attention</span>` : ''}
+        ${r.equip.filter(e=>e.cls==='fail').length ? `<span class="badge badge-fail">✕ ${r.equip.filter(e=>e.cls==='fail').length} Panne</span>` : ''}
+      </div>
+    </div>
+  </div>`;
+  html += `<div class="equip-sections">`;
+  for (const [gname, items] of Object.entries(groups)) {
+    if (!items.length) continue;
+    html += `<div class="equip-section">
+      <div class="equip-section-title">${gname} (${items.length})</div>
+      <div class="equip-grid">${items.map(renderEquipItem).join('')}</div>
+    </div>`;
+  }
+  html += '</div>';
+  return html;
+}
 
-        const selectEl = document.getElementById('restaurantSelect');
-        const loader = document.getElementById('loader');
-        const tableContainer = document.getElementById('tableContainer');
-        const tableBody = document.getElementById('tableBody');
-        const emptyState = document.getElementById('emptyState');
+function renderAll(list) {
+  if (!list.length) return '<div class="empty-msg">Aucun résultat trouvé.</div>';
+  let rows = list.map(r => {
+    const issueItems = r.equip.filter(e => e.cls === 'fail');
+    const warnItems = r.equip.filter(e => e.cls === 'warn');
+    const okItems = r.equip.filter(e => e.cls === 'ok');
+    const remarks = r.equip.filter(e => e.remark && e.remark.trim() && e.remark.toLowerCase() !== 'ras').map(e => e.remark).slice(0, 2);
+    return `<tr>
+      <td><div class="restaurant-name">${r.name}</div>${r.number?`<div class="restaurant-num">#${r.number}</div>`:''}</td>
+      <td>${okItems.length ? `<span class="badge badge-ok">✓ ${okItems.length}</span>` : ''}</td>
+      <td>${warnItems.length ? `<span class="badge badge-warn">⚠ ${warnItems.length}</span>` : '<span style="color:var(--muted);font-size:12px">—</span>'}</td>
+      <td>${issueItems.length ? issueItems.map(e=>`<div style="margin-bottom:2px"><span class="badge badge-fail" style="font-size:10px">${e.description}</span></div>`).join('') : '<span style="color:var(--muted);font-size:12px">—</span>'}</td>
+      <td style="max-width:220px;font-size:12px;color:var(--muted)">${remarks.map(r=>`<div style="margin-bottom:3px">• ${r.substring(0,60)}${r.length>60?'…':''}</div>`).join('')}</td>
+    </tr>`;
+  }).join('');
+  return `<div class="table-wrap">
+    <div class="table-title">Vue globale — ${list.length} restaurant${list.length>1?'s':''}</div>
+    <div style="overflow-x:auto">
+    <table>
+      <thead><tr><th>Restaurant</th><th>OK</th><th>Attention</th><th>En panne</th><th>Remarques</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table></div>
+  </div>`;
+}
 
-        SHEET_NAMES.forEach(name => {
-            const option = document.createElement('option');
-            option.value = name;
-            option.textContent = name.replace('Etat équipement IT 2026 ', 'BK '); 
-            selectEl.appendChild(option);
-        });
+function render() {
+  const selVal = select.value;
+  const search = document.getElementById('searchBox').value.toLowerCase();
 
-        selectEl.addEventListener('change', (e) => {
-            fetchSheetData(e.target.value);
-        });
+  let list = data;
+  if (search) {
+    list = data.filter(r => {
+      const text = JSON.stringify(r).toLowerCase();
+      return text.includes(search);
+    });
+  }
 
-        function fetchSheetData(sheetName) {
-            emptyState.style.display = 'none';
-            tableContainer.style.display = 'none';
-            loader.style.display = 'block';
-            tableBody.innerHTML = '';
+  document.getElementById('countBadge').textContent = selVal === '' ? `${list.length} restaurants` : '1 restaurant';
+  renderStats(selVal === '' ? list : [data[selVal]]);
 
-            const oldScript = document.getElementById('gviz-script');
-            if (oldScript) {
-                oldScript.remove();
-            }
+  if (selVal !== '') {
+    document.getElementById('mainContent').innerHTML = renderSingle(data[parseInt(selVal)]);
+  } else {
+    document.getElementById('mainContent').innerHTML = renderAll(list);
+  }
+}
 
-            const script = document.createElement('script');
-            script.id = 'gviz-script';
-            script.src = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json;responseHandler:handleGoogleSheetsResponse&sheet=${encodeURIComponent(sheetName)}&range=A7:G`;
-            
-            script.onerror = function() {
-                emptyState.innerHTML = `<span style="color:red">Erreur de connexion. Vérifiez votre internet.</span>`;
-                emptyState.style.display = 'block';
-                loader.style.display = 'none';
-            };
-
-            document.body.appendChild(script);
-        }
-
-        window.handleGoogleSheetsResponse = function(response) {
-            if (response.status === 'error') {
-                emptyState.innerHTML = `<span style="color:red">Erreur: ${response.errors[0].message}. Vérifiez le nom de la feuille.</span>`;
-                emptyState.style.display = 'block';
-                loader.style.display = 'none';
-                return;
-            }
-            renderTable(response.table.rows);
-        };
-
-        function getBadgeHTML(value, type) {
-            if (!value || value.toString().trim() === '') return `<span class="badge badge-empty">-</span>`;
-            
-            const valLower = value.toString().toLowerCase().trim();
-            
-            if (type === 'exist') {
-                if (valLower === 'oui' || valLower === 'yes') return `<span class="badge badge-yes">${value}</span>`;
-                if (valLower === 'non' || valLower === 'no') return `<span class="badge badge-no">${value}</span>`;
-            }
-            
-            if (type === 'status') {
-                if (valLower === 'bien' || valLower === 'good' || valLower === 'en marche') return `<span class="badge badge-good">${value}</span>`;
-                if (valLower === 'mauvais' || valLower === 'bad' || valLower === 'panne' || valLower === 'moyenne') return `<span class="badge badge-bad">${value}</span>`;
-            }
-            
-            return value; 
-        }
-
-        function renderTable(rows) {
-            let bodyHtml = '';
-            
-            for (let i = 1; i < rows.length; i++) {
-                const c = rows[i].c;
-                if (!c) continue;
-
-                const rawCategory = c[0] && c[0].v ? c[0].v.toString().trim() : '';
-                const description = c[1] && c[1].v ? c[1].v.toString().trim() : '';
-                
-                if (!rawCategory && !description) continue;
-
-                if (rawCategory) {
-                    const cleanCategory = rawCategory.replace(':', '').trim();
-                    bodyHtml += `
-                        <tr class="category-row">
-                            <td colspan="6">${cleanCategory}</td>
-                        </tr>
-                    `;
-                }
-
-                if (description) {
-                    const exist = c[2] && c[2].v ? c[2].v : '';
-                    const marque = c[3] && c[3].v ? c[3].v : '';
-                    const modele = c[4] && c[4].v ? c[4].v : '';
-                    const status = c[5] && c[5].v ? c[5].v : '';
-                    const remarque = c[6] && c[6].v ? c[6].v : '';
-
-                    bodyHtml += `
-                        <tr>
-                            <td><strong>${description}</strong></td>
-                            <td>${getBadgeHTML(exist, 'exist')}</td>
-                            <td>${marque || '<span class="badge-empty">-</span>'}</td>
-                            <td>${modele || '<span class="badge-empty">-</span>'}</td>
-                            <td>${getBadgeHTML(status, 'status')}</td>
-                            <td><span style="color:#ef4444; font-size: 0.85rem;">${remarque || ''}</span></td>
-                        </tr>
-                    `;
-                }
-            }
-
-            tableBody.innerHTML = bodyHtml;
-            loader.style.display = 'none';
-            tableContainer.style.display = 'table';
-        }
-    </script>
+select.addEventListener('change', render);
+document.getElementById('searchBox').addEventListener('input', render);
+render();
+</script>
 </body>
 </html>
