@@ -339,12 +339,13 @@ function getCategory(desc){
   if(d.startsWith('tiroir')) return 'HD';
   if(d.includes('godex')||d.includes('ptd')) return 'Imprimantes';
   if(d.includes('imprimante')) return 'Imprimantes';
+  if(d.includes('kds')) return 'KDS';
+  if(d.includes('dmb')) return 'DMB';
   if(d.includes('pc aloha')||d.includes('ecran')||d.includes('switch')||d.includes('routeur')||d.includes('anduleur')) return 'Bureau';
   return 'Bureau';
 }
 
-const CAT_ICONS={'Bureau':'ti-device-desktop','POS':'ti-cash-register','Imprimantes':'ti-printer','HD':'ti-archive'};
-
+const CAT_ICONS={'Bureau':'ti-device-desktop','POS':'ti-cash-register','Imprimantes':'ti-printer','KDS':'ti-device-tablet','DMB':'ti-screen-share','HD':'ti-archive'};
 const data=RAW.map(r=>({
   ...r,
   equip:r.equipment.filter(e=>e.description&&e.description.trim()).map(e=>({...e,cls:classify(e),cat:getCategory(e.description)}))
@@ -386,7 +387,8 @@ function eqItem(e){
 function renderSingle(r){
   const cats={};
   r.equip.forEach(e=>{if(!cats[e.cat])cats[e.cat]=[];cats[e.cat].push(e);});
-  const catOrder=['Bureau','POS','Imprimantes','HD'];
+  const catOrder=['Bureau','POS','Imprimantes','KDS','DMB','HD'];
+  
   let html=`<div class="back-btn" onclick="backToAll()"><i class="ti ti-arrow-left"></i> Retour à la liste</div>`;
   html+=`<div class="rest-hdr"><div><div class="rest-name">${r.name}</div>${r.number?`<div class="rest-num">N° ${r.number}</div>`:''}<div class="pills">`;
   const ok=r.equip.filter(e=>e.cls==='ok').length;
