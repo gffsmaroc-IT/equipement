@@ -46,7 +46,18 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background: var(--bg-color); color: var(--text-primary); transition: var(--transition); overflow: hidden; height: 100vh; display: flex; }
+body { 
+    background: var(--bg-color); 
+    color: var(--text-primary); 
+    transition: var(--transition); 
+    overflow: hidden; 
+    display: flex; 
+    
+    /* Ensure the zoom value matches the division value in height and width */
+    zoom: 0.75;
+    height: calc(100vh / 0.75); 
+    width: calc(100vw / 0.75);
+}
         ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: var(--text-secondary); border-radius: 10px; }
@@ -149,9 +160,12 @@
         .chart-card h3 { margin-bottom: 20px; font-size: 1.1rem; color: var(--text-primary); }
         .chart-wrapper { position: relative; height: 350px; width: 100%; } 
         
-        .table-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; background: var(--surface-solid); padding: 20px; border-radius: 20px; box-shadow: var(--shadow-sm); border: 1px solid var(--border-color); }
-        .filters { display: flex; gap: 15px; }
-        .filter-select { padding: 10px 15px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-primary); border-radius: 10px; outline: none; font-size: 0.9rem; }
+        .table-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; background: var(--surface-solid); padding: 20px; border-radius: 20px; box-shadow: var(--shadow-sm); border: 1px solid var(--border-color); flex-wrap: wrap; gap: 15px; }
+        .filters { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+        .filter-select { padding: 10px 15px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-primary); border-radius: 10px; outline: none; font-size: 0.9rem; cursor: pointer; transition: var(--transition); }
+        .filter-select:hover { border-color: var(--text-secondary); }
+        .filter-select:focus { border-color: var(--primary); }
+        #reset-filters-btn { padding: 10px 16px; font-size: 0.85rem; }
         
         .table-container { background: var(--surface-solid); border-radius: 20px; box-shadow: var(--shadow-sm); border: 1px solid var(--border-color); overflow: hidden; margin-bottom: 20px; }
         table { width: 100%; border-collapse: collapse; }
@@ -166,6 +180,7 @@
         .status-op { background: rgba(1, 181, 116, 0.1); color: var(--success); border: 1px solid rgba(1, 181, 116, 0.2); }
         .status-deg { background: rgba(255, 181, 71, 0.1); color: var(--warning); border: 1px solid rgba(255, 181, 71, 0.2); }
         .status-down { background: rgba(238, 93, 80, 0.1); color: var(--danger); border: 1px solid rgba(238, 93, 80, 0.2); }
+        .status-na { background: rgba(163, 174, 209, 0.12); color: var(--text-secondary); border: 1px dashed var(--border-color); font-weight: 500; }
         
         select.editable-status { appearance: none; cursor: pointer; outline: none; width: 120px; }
         .editable-cell { padding: 8px; border-radius: 8px; border: 1px dashed transparent; transition: var(--transition); min-height: 38px; display: flex; align-items: center; }
@@ -290,6 +305,11 @@
 
                     <div class="table-controls">
                         <div class="filters">
+                            <select class="filter-select" id="filter-exist" onchange="applyFilters()">
+                                <option value="ALL">All Equipment</option>
+                                <option value="YES">Existing Only</option>
+                                <option value="NO">Non-Existing Only</option>
+                            </select>
                             <select class="filter-select" id="filter-status" onchange="applyFilters()">
                                 <option value="ALL">All Statuses</option>
                                 <option value="Opérationnel">Opérationnel</option>
@@ -299,6 +319,9 @@
                             <select class="filter-select" id="filter-category" onchange="applyFilters()">
                                 <option value="ALL">All Categories</option>
                             </select>
+                            <button class="btn-outline" id="reset-filters-btn" onclick="resetFilters()" title="Reset all filters">
+                                <i class="fa-solid fa-rotate-left"></i> Reset
+                            </button>
                         </div>
                         <div style="font-size: 0.9rem; color: var(--text-secondary);">
                             Showing <span id="showing-count" style="font-weight:600; color:var(--text-primary);">0</span> items
@@ -355,7 +378,7 @@
     </div>
 
     <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx9G4NXqJykxFM7E2I9iXLxrmClx09GtipfQjnE3dOUjUcXPxW6UyhXyZUly34yt7vI/exec";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwgU6vohD4iVbIuZsuyWW3n8cj8_NSQbRQfnIlNDWQmryAXomeRrCs9nJSYoJpCWPrF/exec";
         const ADMIN_CODE = "admin123";
         
         const restaurants = [
@@ -378,12 +401,14 @@
             sortCol: null,
             sortAsc: true,
             currentPage: 1,
-            itemsPerPage: 15,
+            itemsPerPage: 25,
             charts: {}
         };
 
         const accessCodes = {};
         restaurants.forEach(r => accessCodes[r.split(" ")[0].toUpperCase()] = r);
+
+        restoreSession();
 
         function authenticate() {
             const input = document.getElementById('auth-code').value.trim();
@@ -392,11 +417,13 @@
             if (input === ADMIN_CODE) {
                 state.role = 'ADMIN';
                 state.currentLocation = restaurants[0];
+                saveSession();
                 initEnvironment();
                 showAlert('success', 'Admin Access Granted');
             } else if (accessCodes[input.toUpperCase()]) {
                 state.role = 'RESTO';
                 state.currentLocation = accessCodes[input.toUpperCase()];
+                saveSession();
                 initEnvironment();
                 showAlert('success', `Welcome ${state.currentLocation}`);
             } else {
@@ -404,9 +431,27 @@
             }
         }
 
-        function initEnvironment() {
-            document.getElementById('login-screen').style.opacity = '0';
-            setTimeout(() => {
+        function saveSession() {
+            sessionStorage.setItem('bk_infra_session', JSON.stringify({ role: state.role, location: state.currentLocation }));
+        }
+
+        function restoreSession() {
+            const saved = sessionStorage.getItem('bk_infra_session');
+            if (!saved) return;
+            try {
+                const parsed = JSON.parse(saved);
+                if (parsed.role && parsed.location) {
+                    state.role = parsed.role;
+                    state.currentLocation = parsed.location;
+                    initEnvironment(true);
+                }
+            } catch (err) {
+                sessionStorage.removeItem('bk_infra_session');
+            }
+        }
+
+        function initEnvironment(instant) {
+            const finalizeInit = () => {
                 document.getElementById('login-screen').style.visibility = 'hidden';
                 document.getElementById('app-screen').style.display = 'flex';
                 
@@ -424,7 +469,15 @@
                 }
 
                 fetchData(state.currentLocation);
-            }, 500);
+            };
+
+            document.getElementById('login-screen').style.opacity = '0';
+            if (instant) {
+                document.getElementById('login-screen').style.transition = 'none';
+                finalizeInit();
+            } else {
+                setTimeout(finalizeInit, 500);
+            }
         }
 
         function logout() {
@@ -433,6 +486,7 @@
                 showCancelButton: true, confirmButtonColor: 'var(--danger)', cancelButtonColor: 'var(--text-secondary)', confirmButtonText: 'Logout'
             }).then((result) => {
                 if (result.isConfirmed) {
+                    sessionStorage.removeItem('bk_infra_session');
                     location.reload();
                 }
             });
@@ -502,12 +556,14 @@
             const search = document.getElementById('global-search').value.toLowerCase();
             const status = document.getElementById('filter-status').value;
             const cat = document.getElementById('filter-category').value;
+            const existFilter = document.getElementById('filter-exist').value;
 
             state.filteredData = state.rawData.map((item, idx) => ({ ...item, _originalIndex: idx })).filter(row => {
                 const matchSearch = Object.values(row).some(v => String(v).toLowerCase().includes(search));
-                const matchStatus = status === 'ALL' || row.etat === status;
+                const matchStatus = status === 'ALL' || (row.exist && row.etat === status);
                 const matchCat = cat === 'ALL' || row.cat === cat;
-                return matchSearch && matchStatus && matchCat;
+                const matchExist = existFilter === 'ALL' || (existFilter === 'YES' && row.exist) || (existFilter === 'NO' && !row.exist);
+                return matchSearch && matchStatus && matchCat && matchExist;
             });
 
             state.currentPage = 1;
@@ -515,7 +571,19 @@
             updateKPIs();
         }
 
-        function handleSearch() { applyFilters(); }
+        function resetFilters() {
+            document.getElementById('global-search').value = '';
+            document.getElementById('filter-status').value = 'ALL';
+            document.getElementById('filter-category').value = 'ALL';
+            document.getElementById('filter-exist').value = 'ALL';
+            applyFilters();
+        }
+
+        let searchDebounceTimer = null;
+        function handleSearch() {
+            clearTimeout(searchDebounceTimer);
+            searchDebounceTimer = setTimeout(applyFilters, 250);
+        }
 
         function populateCategoryFilter() {
             const select = document.getElementById('filter-category');
@@ -559,10 +627,30 @@
 
             document.getElementById('showing-count').innerText = state.filteredData.length;
 
+            if (paginatedData.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="text-align:center; padding:50px 20px; color:var(--text-secondary);">
+                            <i class="fa-solid fa-box-open" style="font-size:2.2rem; display:block; margin-bottom:12px; opacity:0.35;"></i>
+                            No equipment matches your search criteria
+                        </td>
+                    </tr>`;
+                renderPagination();
+                return;
+            }
+
             paginatedData.forEach(row => {
                 let badgeClass = "status-op";
                 if(row.etat === "Dégradé") badgeClass = "status-deg";
                 if(row.etat === "En Panne") badgeClass = "status-down";
+
+                const statusCell = row.exist ? `
+                        <select class="status-badge ${badgeClass} editable-status" ${!isAdmin ? 'disabled' : ''} onchange="handleStatusChange(this, ${row._originalIndex})">
+                            <option value="Opérationnel" ${row.etat === 'Opérationnel' ? 'selected' : ''}>Opérationnel</option>
+                            <option value="Dégradé" ${row.etat === 'Dégradé' ? 'selected' : ''}>Dégradé</option>
+                            <option value="En Panne" ${row.etat === 'En Panne' ? 'selected' : ''}>En Panne</option>
+                        </select>
+                    ` : `<span class="status-badge status-na"><i class="fa-solid fa-ban" style="font-size:0.75rem; margin-right:4px;"></i>N/A</span>`;
 
                 let tr = document.createElement('tr');
                 tr.innerHTML = `
@@ -570,25 +658,28 @@
                     <td>${row.desc || '-'}</td>
                     <td style="text-align:center">
                         <label class="toggle-switch ${!isAdmin ? 'disabled-toggle' : ''}">
-                            <input type="checkbox" ${row.exist ? 'checked' : ''} onchange="updateField(null, 'exist', this.checked, ${row._originalIndex})">
+                            <input type="checkbox" ${row.exist ? 'checked' : ''} onchange="handleExistToggle(this, ${row._originalIndex})">
                             <span class="slider"></span>
                         </label>
                     </td>
                     <td><div class="editable-cell" ${isAdmin ? 'contenteditable="true"' : ''} onblur="updateField(null, 'marque', this.innerText, ${row._originalIndex})">${row.marque || '-'}</div></td>
                     <td><div class="editable-cell" ${isAdmin ? 'contenteditable="true"' : ''} onblur="updateField(null, 'modele', this.innerText, ${row._originalIndex})">${row.modele || '-'}</div></td>
-                    <td>
-                        <select class="status-badge ${badgeClass} editable-status" ${!isAdmin ? 'disabled' : ''} onchange="handleStatusChange(this, ${row._originalIndex})">
-                            <option value="Opérationnel" ${row.etat === 'Opérationnel' ? 'selected' : ''}>Opérationnel</option>
-                            <option value="Dégradé" ${row.etat === 'Dégradé' ? 'selected' : ''}>Dégradé</option>
-                            <option value="En Panne" ${row.etat === 'En Panne' ? 'selected' : ''}>En Panne</option>
-                        </select>
-                    </td>
+                    <td>${statusCell}</td>
                     <td><div class="editable-cell" ${isAdmin ? 'contenteditable="true"' : ''} onblur="updateField(null, 'remarque', this.innerText, ${row._originalIndex})">${row.remarque || '-'}</div></td>
                 `;
                 tbody.appendChild(tr);
             });
 
             renderPagination();
+        }
+
+        function handleExistToggle(checkboxEl, originalIndex) {
+            const checked = checkboxEl.checked;
+            updateField(null, 'exist', checked, originalIndex);
+            if (checked && !state.rawData[originalIndex].etat) {
+                updateField(null, 'etat', 'Opérationnel', originalIndex);
+            }
+            applyFilters();
         }
 
         function handleStatusChange(selectEl, originalIndex) {
@@ -642,6 +733,7 @@
             let op = 0, deg = 0, down = 0;
             
             data.forEach(r => {
+                if (!r.exist) return;
                 if(r.etat === "Opérationnel") op++;
                 if(r.etat === "Dégradé") deg++;
                 if(r.etat === "En Panne") down++;
@@ -687,6 +779,7 @@
                 if (r.cat) {
                     cats[r.cat] = (cats[r.cat] || 0) + 1;
                 }
+                if (!r.exist) return;
                 if(r.etat === "Opérationnel") op++;
                 if(r.etat === "Dégradé") deg++;
                 if(r.etat === "En Panne") down++;

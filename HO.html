@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
-
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23007bff'%3E%3Cpath d='M20 18c1.1 0 1.99-.9 1.99-2L22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z'/%3E%3C/svg%3E">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BK IT Infrastructure | Enterprise Dashboard</title>
-    
+    <title>BK IT Infra | Head Office Dashboard</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23007bff'%3E%3Cpath d='M20 18c1.1 0 1.99-.9 1.99-2L22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z'/%3E%3C/svg%3E">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     
@@ -92,7 +90,6 @@
 
         #app-screen { display: none; width: 100%; height: 100%; }
         
-        /* Sidebar Styling & Toggle Logic */
         .sidebar { 
             width: var(--sidebar-w); background: var(--bg-surface); border-right: 1px solid var(--border-light); 
             display: flex; flex-direction: column; z-index: 100; transition: var(--transition); 
@@ -177,14 +174,6 @@
         .status-down { background: var(--danger-bg); color: var(--danger-text); }
         .status-na { background: var(--bg-body); color: var(--text-muted); cursor: not-allowed; }
 
-        .toggle-switch { position: relative; display: inline-block; width: 28px; height: 16px; }
-        .toggle-switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--border-focus); transition: .3s; border-radius: 16px; }
-        .slider:before { position: absolute; content: ""; height: 12px; width: 12px; left: 2px; bottom: 2px; background-color: white; transition: .3s; border-radius: 50%; box-shadow: 0 1px 2px rgba(0,0,0,0.2); }
-        input:checked + .slider { background-color: var(--primary); }
-        input:checked + .slider:before { transform: translateX(12px); }
-        .disabled-toggle { pointer-events: none; opacity: 0.5; }
-
         .pagination { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: var(--bg-surface); border-top: 1px solid var(--border-light); }
         .pagination-info { font-size: 0.7rem; color: var(--text-muted); }
         .pagination-btns { display: flex; gap: 4px; }
@@ -194,7 +183,7 @@
         .page-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
         #add-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(17, 24, 39, 0.6); backdrop-filter: blur(2px); display: none; justify-content: center; align-items: center; z-index: 9999; }
-        .modal-content { background: var(--bg-surface); border-radius: var(--radius-lg); width: 100%; max-width: 450px; box-shadow: var(--shadow-lg); animation: fadeIn 0.2s ease-out; display: flex; flex-direction: column; }
+        .modal-content { background: var(--bg-surface); border-radius: var(--radius-lg); width: 100%; max-width: 500px; box-shadow: var(--shadow-lg); animation: fadeIn 0.2s ease-out; display: flex; flex-direction: column; }
         .modal-header { padding: 15px 20px; border-bottom: 1px solid var(--border-light); display: flex; justify-content: space-between; align-items: center; }
         .modal-header h2 { font-size: 1rem; font-weight: 600; }
         .modal-close { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.1rem; transition: var(--transition); }
@@ -226,8 +215,8 @@
     <div id="login-screen">
         <div class="login-card">
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Burger_King_2020.svg/960px-Burger_King_2020.svg.png" alt="BK Logo">
-            <h2>IT Infrastructure OS</h2>
-            <p>Secure Enterprise Portal</p>
+            <h2>Head Office OS</h2>
+            <p>Secure Enterprise Portal - HQ</p>
             <div class="input-group">
                 <i class="fa-solid fa-lock"></i>
                 <input type="password" id="auth-code" placeholder="Enter Access Code" onkeypress="if(event.key === 'Enter') authenticate()">
@@ -243,28 +232,17 @@
                 <h3>Infra OS</h3>
             </div>
             <div class="nav-section">
-    <div class="nav-title">Main Menu</div>
-    <ul class="nav-menu">
-        <li class="active" onclick="switchView('dashboard', this)"><i class="fa-solid fa-table-list"></i> Equipment Data</li>
-        <li onclick="switchView('analytics', this)"><i class="fa-solid fa-chart-pie"></i> Analytics</li>
-        
-        <!-- El-button l-jdida hya hadi -->
-        <li>
-            <a href="HO.html" style="text-decoration: none; color: inherit; display: flex; align-items: center; width: 100%; gap: 10px;">
-                <i class="fa-solid fa-house"></i> HO Page
-            </a>
-        </li>
-    </ul>
-    
-    <div id="admin-restaurants-section" style="display:none;">
-        <div class="nav-title" style="margin-top: 15px; display: flex; justify-content: space-between; cursor: pointer;" onclick="toggleLocations()">
-            <span>Locations</span>
-            <i class="fa-solid fa-chevron-down" id="locations-chevron" style="transition: transform 0.2s;"></i>
-        </div>
-        <ul class="nav-menu" id="resto-list">
-        </ul>
-    </div>
-</div>
+                <div class="nav-title">HQ Menu</div>
+                <ul class="nav-menu">
+                    <li class="active" onclick="switchView('dashboard', this)"><i class="fa-solid fa-users-gear"></i> HQ Equipment</li>
+                    <li onclick="switchView('analytics', this)"><i class="fa-solid fa-chart-pie"></i> Analytics</li>
+                </ul>
+                
+                <div class="nav-title" style="margin-top: 15px;">Network</div>
+                <ul class="nav-menu">
+                    <li onclick="window.location.href='index.html'"><i class="fa-solid fa-store"></i> Restaurants View</li>
+                </ul>
+            </div>
         </aside>
 
         <main class="main-wrapper">
@@ -273,7 +251,7 @@
                     <button class="icon-btn" onclick="toggleSidebar()" title="Toggle Sidebar"><i class="fa-solid fa-bars"></i></button>
                     <div class="search-container">
                         <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="text" id="global-search" placeholder="Search categories, models, remarks..." onkeyup="handleSearch()">
+                        <input type="text" id="global-search" placeholder="Search user, device, serial..." onkeyup="handleSearch()">
                     </div>
                 </div>
                 <div class="topbar-actions">
@@ -281,9 +259,9 @@
                     <div class="user-profile" onclick="logout()" title="Logout">
                         <div class="user-info" style="text-align: right;">
                             <h4 id="user-role-display">User Name</h4>
-                            <p id="user-loc-display">Location</p>
+                            <p id="user-loc-display">Head Office</p>
                         </div>
-                        <div class="user-avatar" id="user-avatar-initial">U</div>
+                        <div class="user-avatar" id="user-avatar-initial">H</div>
                     </div>
                 </div>
             </header>
@@ -292,8 +270,8 @@
                 <div id="view-dashboard" class="view-section active">
                     <div class="page-header">
                         <div>
-                            <h1 id="dashboard-title">Overview</h1>
-                            <p>Manage hardware inventory and track operational status.</p>
+                            <h1 id="dashboard-title">Head Office Inventory</h1>
+                            <p>Manage devices assigned to employees and departments.</p>
                         </div>
                         <div class="action-buttons">
                             <button class="btn-outline" onclick="exportExcel()"><i class="fa-solid fa-file-excel" style="color: #107c41;"></i> Excel</button>
@@ -303,8 +281,8 @@
 
                     <div class="kpi-grid">
                         <div class="kpi-card kpi-total">
-                            <div class="kpi-icon"><i class="fa-solid fa-microchip"></i></div>
-                            <div class="kpi-details"><h4>Total Assets</h4><h2 id="kpi-total">0</h2></div>
+                            <div class="kpi-icon"><i class="fa-solid fa-laptop-code"></i></div>
+                            <div class="kpi-details"><h4>Total Devices</h4><h2 id="kpi-total">0</h2></div>
                         </div>
                         <div class="kpi-card kpi-op">
                             <div class="kpi-icon"><i class="fa-solid fa-circle-check"></i></div>
@@ -325,10 +303,11 @@
 
                     <div class="table-controls">
                         <div class="filters">
-                            <select class="filter-select" id="filter-exist" onchange="applyFilters()">
-                                <option value="ALL">All States (Exist/Not)</option>
-                                <option value="YES">Existing Only</option>
-                                <option value="NO">Missing Only</option>
+                            <select class="filter-select" id="filter-type" onchange="applyFilters()">
+                                <option value="ALL">All Equipment Types</option>
+                            </select>
+                            <select class="filter-select" id="filter-dept" onchange="applyFilters()">
+                                <option value="ALL">All Departments</option>
                             </select>
                             <select class="filter-select" id="filter-status" onchange="applyFilters()">
                                 <option value="ALL">All Statuses</option>
@@ -336,14 +315,11 @@
                                 <option value="Dégradé">Dégradé</option>
                                 <option value="En Panne">En Panne</option>
                             </select>
-                            <select class="filter-select" id="filter-category" onchange="applyFilters()">
-                                <option value="ALL">All Categories</option>
-                            </select>
                             <button class="btn-outline" style="padding: 4px 8px;" onclick="resetFilters()" title="Reset Filters"><i class="fa-solid fa-rotate-left"></i></button>
                         </div>
                         <div class="action-buttons">
                             <button class="btn-outline btn-add" id="btn-add-equipment" onclick="openAddModal()" style="display: none;">
-                                <i class="fa-solid fa-plus"></i> Add Equip.
+                                <i class="fa-solid fa-plus"></i> Add Device
                             </button>
                         </div>
                     </div>
@@ -353,13 +329,13 @@
                         <table id="inventory-table">
                             <thead>
                                 <tr>
-                                    <th onclick="sortTable('cat')">Category <i class="fa-solid fa-sort"></i></th>
-                                    <th onclick="sortTable('desc')">Description <i class="fa-solid fa-sort"></i></th>
-                                    <th style="text-align:center; width: 60px;">Exists</th>
-                                    <th onclick="sortTable('marque')">Brand <i class="fa-solid fa-sort"></i></th>
-                                    <th onclick="sortTable('modele')">Model <i class="fa-solid fa-sort"></i></th>
+                                    <th onclick="sortTable('type')" style="width: 15%">Type <i class="fa-solid fa-sort"></i></th>
+                                    <th onclick="sortTable('marque')" style="width: 15%">Marque & Model <i class="fa-solid fa-sort"></i></th>
+                                    <th onclick="sortTable('serie')" style="width: 15%">N° Série <i class="fa-solid fa-sort"></i></th>
+                                    <th onclick="sortTable('utilisateur')" style="width: 15%">Utilisateur <i class="fa-solid fa-sort"></i></th>
+                                    <th onclick="sortTable('emplacement')" style="width: 10%">Département <i class="fa-solid fa-sort"></i></th>
                                     <th onclick="sortTable('etat')" style="width: 120px;">Status <i class="fa-solid fa-sort"></i></th>
-                                    <th>Remarks</th>
+                                    <th>Observation</th>
                                 </tr>
                             </thead>
                             <tbody id="table-body">
@@ -376,95 +352,100 @@
                     <div class="page-header">
                         <div>
                             <h1>Analytics & Reports</h1>
-                            <p>Visual overview of equipment distribution and health.</p>
+                            <p>Visual overview of HQ equipment distribution and health.</p>
                         </div>
                     </div>
                     <div class="charts-grid">
                         <div class="chart-card">
-                            <h3>Category Distribution</h3>
+                            <h3>Devices by Department</h3>
                             <div class="chart-wrapper"><canvas id="categoryChart"></canvas></div>
                         </div>
                         <div class="chart-card">
                             <h3>Overall Health</h3>
                             <div class="chart-wrapper"><canvas id="healthChart"></canvas></div>
                         </div>
-
                     </div>
                 </div>
             </div>
         </main>
     </div>
 
-    <!-- Add Equipment Modal -->
     <div id="add-modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>Add New Equipment</h2>
+                <h2>Add New HQ Device</h2>
                 <button class="modal-close" onclick="closeAddModal()"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="modal-body">
-                <div class="form-group">
-                    <label>Category *</label>
-                    <input type="text" id="add-cat" placeholder="e.g., Bureau, Cuisine, Reseau..." required>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <div class="form-group">
+                        <label>Type d'équipement *</label>
+                        <input type="text" id="add-type" placeholder="e.g., PC, Smartphone, Imprimante..." required>
+                    </div>
+                    <div class="form-group">
+                        <label>Marque & Model *</label>
+                        <input type="text" id="add-marque" placeholder="e.g., HP EliteBook, Samsung A13" required>
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label>Description *</label>
-                    <input type="text" id="add-desc" placeholder="Brief description of the asset" required>
+                    <label>Numéro de Série</label>
+                    <input type="text" id="add-serie" placeholder="S/N...">
                 </div>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
                     <div class="form-group">
-                        <label>Brand</label>
-                        <input type="text" id="add-marque" placeholder="e.g., HP, Dell, Cisco">
+                        <label>Utilisateur Affecté</label>
+                        <input type="text" id="add-user" placeholder="Nom de l'employé">
                     </div>
                     <div class="form-group">
-                        <label>Model</label>
-                        <input type="text" id="add-modele" placeholder="Model number">
+                        <label>Département</label>
+                        <input type="text" id="add-dept" placeholder="e.g., IT, RH, Finance...">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>Remarks</label>
-                    <input type="text" id="add-remarque" placeholder="Any additional notes...">
+                    <label>Observation</label>
+                    <input type="text" id="add-obs" placeholder="Notes supplémentaires...">
                 </div>
             </div>
             <div class="modal-footer">
                 <button class="btn-outline" onclick="closeAddModal()">Cancel</button>
-                <button class="btn-primary" style="width: auto;" onclick="saveNewEquipment()">Save Equipment</button>
+                <button class="btn-primary" style="width: auto;" onclick="saveNewEquipment()">Save Device</button>
             </div>
         </div>
     </div>
 
-    <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwqDa05cgAGKETjwnfJw5-5fsY6JKMepZoqj7rNatGYJU0DI4hzDEhefB3vJau--KKm/exec";
+ <script>
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwgU6vohD4iVbIuZsuyWW3n8cj8_NSQbRQfnIlNDWQmryAXomeRrCs9nJSYoJpCWPrF/exec";
         const ADMIN_CODE = "admin123";
-        
-        const restaurants = [
-            "Morocco Mall BK", "Kitea Geant BK", "Anfa Place BK", "Borj Fez BK", "Agdal Rabat BK",
-            "Maarif BK", "Carre Eden BK", "AL Jazira BK", "Tanger City Center BK", "Al Mazar BK",
-            "Exit Casa BK", "Sidi Maarouf BK", "Socco Alto BK", "Lafayette BK", "Beni Mellal BK",
-            "El Jadida BK", "Arribat Center BK", "Menara Mall BK", "Abdelmoumen BK", "Harhoura BK",
-            "Tachfine Center BK", "Marina BK", "Mohammadia BK", "Dar Bouazza BK", "Bd Anfa BK",
-            "Mahaj Riad BK", "Tetouan BK", "Laaraache BK", "Ibn Battouta BK", "Targa BK",
-            "T-Relais BK", "Marina Sale BK", "Zeir BK", "El bayda BK", "Temara BK", "2 M-ars BK",
-            "Carrefour Sale BK", "Essalama BK", "Area Mall BK", "Ola Marrakech BK", "Sale bouregreg BK",
-            "settat BK", "Sela Park Agadir BK", "Tamesna BK"
-        ];
 
         let state = {
             role: null,
-            currentLocation: null,
+            currentLocation: "HO",
             rawData: [],
             filteredData: [],
             sortCol: null,
             sortAsc: true,
             currentPage: 1,
-            itemsPerPage: 100, // Show plenty of lines 
+            itemsPerPage: 100,
             charts: {}
         };
 
-        const accessCodes = {};
-        restaurants.forEach(r => accessCodes[r.split(" ")[0].toUpperCase()] = r);
-
         restoreSession();
+
+        // Helper function to safely extract values regardless of GAS key formatting (spaces, cases)
+        const getSafeVal = (row, possibleKeys) => {
+            for (let key of possibleKeys) {
+                if (row[key] !== undefined && row[key] !== null) return row[key];
+            }
+            for (let rowKey in row) {
+                const cleanRowKey = rowKey.toLowerCase().replace(/[^a-z0-9]/g, '');
+                for (let searchKey of possibleKeys) {
+                    if (cleanRowKey === searchKey.toLowerCase().replace(/[^a-z0-9]/g, '')) {
+                        return row[rowKey];
+                    }
+                }
+            }
+            return '';
+        };
 
         function authenticate() {
             const input = document.getElementById('auth-code').value.trim();
@@ -472,14 +453,12 @@
 
             if (input === ADMIN_CODE) {
                 state.role = 'ADMIN';
-                state.currentLocation = restaurants[0];
                 finishLogin();
                 showAlert('success', 'Admin Access Granted');
-            } else if (accessCodes[input.toUpperCase()]) {
-                state.role = 'RESTO';
-                state.currentLocation = accessCodes[input.toUpperCase()];
+            } else if (input.toUpperCase() === "HO") {
+                state.role = 'RESTO'; 
                 finishLogin();
-                showAlert('success', `Welcome ${state.currentLocation}`);
+                showAlert('success', 'Welcome to HO Portal');
             } else {
                 showAlert('error', 'Invalid Access Code');
             }
@@ -499,9 +478,8 @@
             if (!saved) return;
             try {
                 const parsed = JSON.parse(saved);
-                if (parsed.role && parsed.location) {
+                if (parsed.role) {
                     state.role = parsed.role;
-                    state.currentLocation = parsed.location;
                     initEnvironment(true);
                 }
             } catch (err) {
@@ -514,22 +492,17 @@
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('app-screen').style.display = 'flex';
                 
-                document.getElementById('user-role-display').innerText = state.role === 'ADMIN' ? 'System Admin' : 'Manager';
-                document.getElementById('user-loc-display').innerText = state.currentLocation;
-                document.getElementById('user-avatar-initial').innerText = state.role === 'ADMIN' ? 'A' : state.currentLocation.charAt(0);
+                document.getElementById('user-role-display').innerText = state.role === 'ADMIN' ? 'System Admin' : 'HO Manager';
                 
                 if (state.role === 'ADMIN') {
-                    document.getElementById('admin-restaurants-section').style.display = 'block';
                     document.getElementById('main-table-container').classList.add('admin-mode');
                     document.getElementById('btn-add-equipment').style.display = 'flex';
-                    renderSidebarLocations();
                 } else {
-                    document.getElementById('admin-restaurants-section').style.display = 'none';
                     document.getElementById('main-table-container').classList.remove('admin-mode');
                     document.getElementById('btn-add-equipment').style.display = 'none';
                 }
 
-                fetchData(state.currentLocation);
+                fetchData();
             };
 
             if (instant) {
@@ -557,23 +530,22 @@
             sidebar.classList.toggle('collapsed');
         }
 
-        async function fetchData(locationName) {
-            document.getElementById('dashboard-title').innerText = locationName;
+        async function fetchData() {
             const loader = document.getElementById('loader');
             loader.style.display = 'flex';
             
             try {
-                const response = await fetch(`${SCRIPT_URL}?action=getResto&resto=${encodeURIComponent(locationName)}`);
+                const response = await fetch(`${SCRIPT_URL}?action=getResto&resto=HO`);
                 const data = await response.json();
                 if (data.error) throw new Error(data.error);
                 
                 state.rawData = data;
-                populateCategoryFilter();
+                populateFilters();
                 applyFilters();
                 updateCharts();
             } catch (error) {
                 console.error(error);
-                showAlert('error', 'Failed to synchronize database');
+                showAlert('error', 'Failed to synchronize HO database');
             } finally {
                 loader.style.display = 'none';
             }
@@ -584,12 +556,15 @@
 
             state.rawData[originalIndex][key] = val;
             updateKPIs(); 
-            if(key === 'etat' || key === 'exist' || key === 'cat') updateCharts();
+            if(key === 'etat' || key === 'type' || key === 'emplacement') {
+                populateFilters(); 
+                updateCharts();
+            }
 
             try {
                 fetch(SCRIPT_URL, {
                     method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ resto: state.currentLocation, index: originalIndex, key, val })
+                    body: JSON.stringify({ resto: 'HO', index: originalIndex, key, val })
                 });
                 showToast('Changes synchronized');
             } catch (err) {
@@ -597,49 +572,33 @@
             }
         }
 
-        function toggleLocations() {
-            const list = document.getElementById('resto-list');
-            const chevron = document.getElementById('locations-chevron');
-            if (list.style.display === 'none' || list.style.display === '') {
-                list.style.display = 'block';
-                chevron.style.transform = 'rotate(180deg)';
-            } else {
-                list.style.display = 'none';
-                chevron.style.transform = 'rotate(0deg)';
-            }
-        }
+        function populateFilters() {
+            const typeSelect = document.getElementById('filter-type');
+            const types = [...new Set(state.rawData.map(row => getSafeVal(row, ["Type D'équipement", "type", "Type"])))].filter(Boolean).sort();
+            typeSelect.innerHTML = '<option value="ALL">All Equipment Types</option>' + types.map(c => `<option value="${c}">${c}</option>`).join('');
 
-        function renderSidebarLocations() {
-            const list = document.getElementById('resto-list');
-            list.innerHTML = '';
-            restaurants.forEach(r => {
-                let li = document.createElement('li');
-                li.innerHTML = `<i class="fa-solid fa-location-dot"></i> <span>${r}</span>`;
-                if (r === state.currentLocation) li.classList.add('active');
-                li.onclick = () => {
-                    document.querySelectorAll('#resto-list li').forEach(el => el.classList.remove('active'));
-                    li.classList.add('active');
-                    state.currentLocation = r;
-                    document.getElementById('user-loc-display').innerText = r;
-                    document.getElementById('global-search').value = '';
-                    fetchData(r);
-                };
-                list.appendChild(li);
-            });
+            const deptSelect = document.getElementById('filter-dept');
+            const depts = [...new Set(state.rawData.map(row => getSafeVal(row, ["Emplacement", "emplacement", "Departement"])))].filter(Boolean).sort();
+            deptSelect.innerHTML = '<option value="ALL">All Departments</option>' + depts.map(c => `<option value="${c}">${c}</option>`).join('');
         }
 
         function applyFilters() {
             const search = document.getElementById('global-search').value.toLowerCase();
+            const typeVal = document.getElementById('filter-type').value;
+            const deptVal = document.getElementById('filter-dept').value;
             const status = document.getElementById('filter-status').value;
-            const cat = document.getElementById('filter-category').value;
-            const existFilter = document.getElementById('filter-exist').value;
 
             state.filteredData = state.rawData.map((item, idx) => ({ ...item, _originalIndex: idx })).filter(row => {
+                const rType = getSafeVal(row, ["Type D'équipement", "type", "Type"]);
+                const rDept = getSafeVal(row, ["Emplacement", "emplacement", "Departement"]);
+                const rEtat = getSafeVal(row, ["Etat", "etat"]) || 'Opérationnel';
+
                 const matchSearch = Object.values(row).some(v => String(v).toLowerCase().includes(search));
-                const matchStatus = status === 'ALL' || (row.exist && row.etat === status);
-                const matchCat = cat === 'ALL' || row.cat === cat;
-                const matchExist = existFilter === 'ALL' || (existFilter === 'YES' && row.exist) || (existFilter === 'NO' && !row.exist);
-                return matchSearch && matchStatus && matchCat && matchExist;
+                const matchType = typeVal === 'ALL' || rType === typeVal;
+                const matchDept = deptVal === 'ALL' || rDept === deptVal;
+                const matchStatus = status === 'ALL' || rEtat === status;
+                
+                return matchSearch && matchType && matchDept && matchStatus;
             });
 
             state.currentPage = 1;
@@ -650,8 +609,8 @@
         function resetFilters() {
             document.getElementById('global-search').value = '';
             document.getElementById('filter-status').value = 'ALL';
-            document.getElementById('filter-category').value = 'ALL';
-            document.getElementById('filter-exist').value = 'ALL';
+            document.getElementById('filter-type').value = 'ALL';
+            document.getElementById('filter-dept').value = 'ALL';
             applyFilters();
         }
 
@@ -659,12 +618,6 @@
         function handleSearch() {
             clearTimeout(searchDebounce);
             searchDebounce = setTimeout(applyFilters, 300);
-        }
-
-        function populateCategoryFilter() {
-            const select = document.getElementById('filter-category');
-            const cats = [...new Set(state.rawData.map(i => i.cat))].filter(Boolean).sort();
-            select.innerHTML = '<option value="ALL">All Categories</option>' + cats.map(c => `<option value="${c}">${c}</option>`).join('');
         }
 
         function sortTable(col) {
@@ -680,10 +633,12 @@
         function sortData() {
             if (state.sortCol) {
                 state.filteredData.sort((a, b) => {
-                    let valA = a[state.sortCol] || '';
-                    let valB = b[state.sortCol] || '';
+                    let valA = a[state.sortCol] !== undefined ? a[state.sortCol] : (a[state.sortCol.charAt(0).toUpperCase() + state.sortCol.slice(1)] || '');
+                    let valB = b[state.sortCol] !== undefined ? b[state.sortCol] : (b[state.sortCol.charAt(0).toUpperCase() + state.sortCol.slice(1)] || '');
+                    
                     if (typeof valA === 'string') valA = valA.toLowerCase();
                     if (typeof valB === 'string') valB = valB.toLowerCase();
+                    
                     if (valA < valB) return state.sortAsc ? -1 : 1;
                     if (valA > valB) return state.sortAsc ? 1 : -1;
                     return 0;
@@ -704,52 +659,51 @@
             document.getElementById('showing-count').innerText = state.filteredData.length;
 
             if (paginatedData.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:40px 20px; color:var(--text-muted);"><i class="fa-solid fa-inbox" style="font-size:2rem; display:block; margin-bottom:10px; opacity:0.5;"></i>No records found</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:40px 20px; color:var(--text-muted);"><i class="fa-solid fa-inbox" style="font-size:2rem; display:block; margin-bottom:10px; opacity:0.5;"></i>No devices found</td></tr>`;
                 renderPagination();
                 return;
             }
 
             paginatedData.forEach(row => {
+                // Using getSafeVal to robustly extract sheet data
+                const rType = getSafeVal(row, ["Type D'équipement", "type", "Type"]);
+                const rMarque = getSafeVal(row, ["Marque / Model", "marque", "Marque_Model"]);
+                const rSerie = getSafeVal(row, ["Num de série", "serie", "Num_Serie"]);
+                const rUser = getSafeVal(row, ["Utilisateur Affecté", "utilisateur", "Utilisateur"]);
+                const rDept = getSafeVal(row, ["Emplacement", "emplacement", "Departement"]);
+                let rEtat = getSafeVal(row, ["Etat", "etat"]);
+                const rObs = getSafeVal(row, ["Observation", "observation"]);
+                
+                // Fallback for status if empty
+                if (!rEtat || rEtat === '') rEtat = "Opérationnel";
+
                 let badgeClass = "status-op";
-                if(row.etat === "Dégradé") badgeClass = "status-deg";
-                if(row.etat === "En Panne") badgeClass = "status-down";
+                if(rEtat === "Dégradé") badgeClass = "status-deg";
+                if(rEtat === "En Panne") badgeClass = "status-down";
 
-                const statusCell = row.exist ? `
-                        <select class="status-badge ${badgeClass}" ${!isAdmin ? 'disabled' : ''} onchange="handleStatusChange(this, ${row._originalIndex})">
-                            <option value="Opérationnel" ${row.etat === 'Opérationnel' ? 'selected' : ''}>Opérationnel</option>
-                            <option value="Dégradé" ${row.etat === 'Dégradé' ? 'selected' : ''}>Dégradé</option>
-                            <option value="En Panne" ${row.etat === 'En Panne' ? 'selected' : ''}>En Panne</option>
-                        </select>
-                    ` : `<span class="status-badge status-na">Not Installed</span>`;
+                const statusCell = `
+                    <select class="status-badge ${badgeClass}" ${!isAdmin ? 'disabled' : ''} onchange="handleStatusChange(this, ${row._originalIndex})">
+                        <option value="Opérationnel" ${rEtat === 'Opérationnel' ? 'selected' : ''}>Opérationnel</option>
+                        <option value="Dégradé" ${rEtat === 'Dégradé' ? 'selected' : ''}>Dégradé</option>
+                        <option value="En Panne" ${rEtat === 'En Panne' ? 'selected' : ''}>En Panne</option>
+                    </select>
+                `;
 
+                // Sending exact column names to updateField based on typical GAS setup
                 let tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td style="font-weight: 500;">${row.cat || '-'}</td>
-                    <td>${row.desc || '-'}</td>
-                    <td style="text-align:center">
-                        <label class="toggle-switch ${!isAdmin ? 'disabled-toggle' : ''}">
-                            <input type="checkbox" ${row.exist ? 'checked' : ''} onchange="handleExistToggle(this, ${row._originalIndex})">
-                            <span class="slider"></span>
-                        </label>
-                    </td>
-                    <td><div class="editable-cell" ${isAdmin ? 'contenteditable="true"' : ''} onblur="updateField(null, 'marque', this.innerText, ${row._originalIndex})">${row.marque || '-'}</div></td>
-                    <td><div class="editable-cell" ${isAdmin ? 'contenteditable="true"' : ''} onblur="updateField(null, 'modele', this.innerText, ${row._originalIndex})">${row.modele || '-'}</div></td>
+                    <td style="font-weight: 500;"><div class="editable-cell" ${isAdmin ? 'contenteditable="true"' : ''} onblur="updateField(null, 'Type D\\'équipement', this.innerText, ${row._originalIndex})">${rType}</div></td>
+                    <td><div class="editable-cell" ${isAdmin ? 'contenteditable="true"' : ''} onblur="updateField(null, 'Marque / Model', this.innerText, ${row._originalIndex})">${rMarque}</div></td>
+                    <td><div class="editable-cell" ${isAdmin ? 'contenteditable="true"' : ''} onblur="updateField(null, 'Num de série', this.innerText, ${row._originalIndex})">${rSerie}</div></td>
+                    <td><div class="editable-cell" ${isAdmin ? 'contenteditable="true"' : ''} onblur="updateField(null, 'Utilisateur Affecté', this.innerText, ${row._originalIndex})">${rUser}</div></td>
+                    <td><div class="editable-cell" ${isAdmin ? 'contenteditable="true"' : ''} onblur="updateField(null, 'Emplacement', this.innerText, ${row._originalIndex})">${rDept}</div></td>
                     <td>${statusCell}</td>
-                    <td><div class="editable-cell" ${isAdmin ? 'contenteditable="true"' : ''} onblur="updateField(null, 'remarque', this.innerText, ${row._originalIndex})">${row.remarque || ''}</div></td>
+                    <td><div class="editable-cell" ${isAdmin ? 'contenteditable="true"' : ''} onblur="updateField(null, 'Observation', this.innerText, ${row._originalIndex})">${rObs}</div></td>
                 `;
                 tbody.appendChild(tr);
             });
 
             renderPagination();
-        }
-
-        function handleExistToggle(checkboxEl, originalIndex) {
-            const checked = checkboxEl.checked;
-            updateField(null, 'exist', checked, originalIndex);
-            if (checked && (!state.rawData[originalIndex].etat || state.rawData[originalIndex].etat === '')) {
-                updateField(null, 'etat', 'Opérationnel', originalIndex);
-            }
-            applyFilters();
         }
 
         function handleStatusChange(selectEl, originalIndex) {
@@ -758,7 +712,7 @@
             if (val === "Opérationnel") selectEl.classList.add('status-op');
             if (val === "Dégradé") selectEl.classList.add('status-deg');
             if (val === "En Panne") selectEl.classList.add('status-down');
-            updateField(null, 'etat', val, originalIndex);
+            updateField(null, 'Etat', val, originalIndex); 
         }
 
         function renderPagination() {
@@ -803,11 +757,13 @@
             const data = state.filteredData;
             let op = 0, deg = 0, down = 0;
             
-            data.forEach(r => {
-                if (!r.exist) return;
-                if(r.etat === "Opérationnel") op++;
-                if(r.etat === "Dégradé") deg++;
-                if(r.etat === "En Panne") down++;
+            data.forEach(row => {
+                let rEtat = getSafeVal(row, ["Etat", "etat"]);
+                if (!rEtat || rEtat === '') rEtat = "Opérationnel";
+                
+                if(rEtat === "Opérationnel") op++;
+                if(rEtat === "Dégradé") deg++;
+                if(rEtat === "En Panne") down++;
             });
             
             const total = data.length || 1; 
@@ -829,30 +785,34 @@
             const textColor = rootStyle.getPropertyValue('--text-muted').trim();
             const gridColor = rootStyle.getPropertyValue('--border-light').trim();
             
-            const cats = {};
+            const depts = {};
             let op = 0, deg = 0, down = 0;
 
-            state.rawData.forEach(r => {
-                if (r.cat) cats[r.cat] = (cats[r.cat] || 0) + 1;
-                if (!r.exist) return;
-                if(r.etat === "Opérationnel") op++;
-                if(r.etat === "Dégradé") deg++;
-                if(r.etat === "En Panne") down++;
+            state.rawData.forEach(row => {
+                const dept = getSafeVal(row, ["Emplacement", "emplacement", "Departement"]) || 'Unknown';
+                depts[dept] = (depts[dept] || 0) + 1;
+                
+                let rEtat = getSafeVal(row, ["Etat", "etat"]);
+                if (!rEtat || rEtat === '') rEtat = "Opérationnel";
+                
+                if(rEtat === "Opérationnel") op++;
+                if(rEtat === "Dégradé") deg++;
+                if(rEtat === "En Panne") down++;
             });
 
-            const sortedCats = Object.entries(cats).sort((a, b) => b[1] - a[1]);
-            const catLabels = sortedCats.map(c => c[0]);
-            const catData = sortedCats.map(c => c[1]);
+            const sortedDepts = Object.entries(depts).sort((a, b) => b[1] - a[1]);
+            const deptLabels = sortedDepts.map(c => c[0]);
+            const deptData = sortedDepts.map(c => c[1]);
 
             const ctxCat = document.getElementById('categoryChart').getContext('2d');
             if (state.charts.cat) state.charts.cat.destroy();
             state.charts.cat = new Chart(ctxCat, {
                 type: 'bar',
                 data: {
-                    labels: catLabels,
+                    labels: deptLabels,
                     datasets: [{
-                        label: 'Assets',
-                        data: catData,
+                        label: 'Devices',
+                        data: deptData,
                         backgroundColor: '#D62300',
                         borderRadius: 4
                     }]
@@ -889,11 +849,12 @@
         function openAddModal() {
             if (state.role !== 'ADMIN') return;
             document.getElementById('add-modal').style.display = 'flex';
-            document.getElementById('add-cat').value = '';
-            document.getElementById('add-desc').value = '';
+            document.getElementById('add-type').value = '';
             document.getElementById('add-marque').value = '';
-            document.getElementById('add-modele').value = '';
-            document.getElementById('add-remarque').value = '';
+            document.getElementById('add-serie').value = '';
+            document.getElementById('add-user').value = '';
+            document.getElementById('add-dept').value = '';
+            document.getElementById('add-obs').value = '';
         }
 
         function closeAddModal() {
@@ -901,28 +862,37 @@
         }
 
         async function saveNewEquipment() {
-            const cat = document.getElementById('add-cat').value.trim();
-            const desc = document.getElementById('add-desc').value.trim();
+            const type = document.getElementById('add-type').value.trim();
             const marque = document.getElementById('add-marque').value.trim();
-            const modele = document.getElementById('add-modele').value.trim();
-            const remarque = document.getElementById('add-remarque').value.trim();
+            const serie = document.getElementById('add-serie').value.trim();
+            const utilisateur = document.getElementById('add-user').value.trim();
+            const emplacement = document.getElementById('add-dept').value.trim();
+            const observation = document.getElementById('add-obs').value.trim();
 
-            if (!cat || !desc) {
-                return showAlert('warning', 'Category and Description are required.');
+            if (!type || !marque) {
+                return showAlert('warning', 'Type and Marque are required.');
             }
 
-            const newRow = { cat, desc, marque, modele, remarque, exist: true, etat: 'Opérationnel' };
+            const newRow = { 
+                "Type D'équipement": type, 
+                "Marque / Model": marque, 
+                "Num de série": serie, 
+                "Utilisateur Affecté": utilisateur, 
+                "Emplacement": emplacement, 
+                "Observation": observation, 
+                "Etat": 'Opérationnel' 
+            };
             
             state.rawData.push(newRow);
-            populateCategoryFilter();
+            populateFilters();
             applyFilters();
             closeAddModal();
-            showToast('Equipment added & syncing...');
+            showToast('Device added & syncing...');
 
             try {
                 fetch(SCRIPT_URL, {
                     method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ action: 'addEquipment', resto: state.currentLocation, newRow: newRow })
+                    body: JSON.stringify({ action: 'addEquipment', resto: 'HO', newRow: newRow })
                 });
             } catch (err) {
                 console.error(err);
@@ -937,8 +907,8 @@
             });
             const ws = XLSX.utils.json_to_sheet(cleanData);
             const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "Inventory");
-            XLSX.writeFile(wb, `BK_Infra_${state.currentLocation.replace(/\s+/g, '_')}.xlsx`);
+            XLSX.utils.book_append_sheet(wb, ws, "HQ_Inventory");
+            XLSX.writeFile(wb, `BK_HO_Infra_${new Date().toISOString().split('T')[0]}.xlsx`);
         }
 
         function exportPDF() {
@@ -947,18 +917,25 @@
             const doc = new jsPDF();
             
             doc.setFontSize(16);
-            doc.text(`Infrastructure Report - ${state.currentLocation}`, 14, 20);
+            doc.text(`HQ Infrastructure Report`, 14, 20);
             doc.setFontSize(10);
             doc.setTextColor(100);
             doc.text(`Generated: ${new Date().toLocaleString()}`, 14, 28);
 
-            const tableColumn = ["Category", "Description", "Exist", "Brand", "Model", "Status", "Remarks"];
+            const tableColumn = ["Type", "Marque/Model", "S/N", "User", "Department", "Status", "Remarks"];
             const tableRows = [];
 
             state.filteredData.forEach(row => {
-                tableRows.push([
-                    row.cat || '', row.desc || '', row.exist ? 'Yes' : 'No', row.marque || '', row.modele || '', row.etat || '', row.remarque || ''
-                ]);
+                const rType = getSafeVal(row, ["Type D'équipement", "type", "Type"]);
+                const rMarque = getSafeVal(row, ["Marque / Model", "marque", "Marque_Model"]);
+                const rSerie = getSafeVal(row, ["Num de série", "serie", "Num_Serie"]);
+                const rUser = getSafeVal(row, ["Utilisateur Affecté", "utilisateur", "Utilisateur"]);
+                const rDept = getSafeVal(row, ["Emplacement", "emplacement", "Departement"]);
+                let rEtat = getSafeVal(row, ["Etat", "etat"]);
+                if (!rEtat || rEtat === '') rEtat = "Opérationnel";
+                const rObs = getSafeVal(row, ["Observation", "observation"]);
+                
+                tableRows.push([ rType, rMarque, rSerie, rUser, rDept, rEtat, rObs ]);
             });
 
             doc.autoTable({
@@ -968,7 +945,7 @@
                 alternateRowStyles: { fillColor: [249, 250, 251] }
             });
 
-            doc.save(`BK_Infra_${state.currentLocation.replace(/\s+/g, '_')}.pdf`);
+            doc.save(`BK_HO_Infra.pdf`);
         }
 
         function switchView(viewId, el) {

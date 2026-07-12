@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
-
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23007bff'%3E%3Cpath d='M20 18c1.1 0 1.99-.9 1.99-2L22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z'/%3E%3C/svg%3E">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BK IT Infrastructure | Enterprise Dashboard</title>
@@ -243,28 +241,21 @@
                 <h3>Infra OS</h3>
             </div>
             <div class="nav-section">
-    <div class="nav-title">Main Menu</div>
-    <ul class="nav-menu">
-        <li class="active" onclick="switchView('dashboard', this)"><i class="fa-solid fa-table-list"></i> Equipment Data</li>
-        <li onclick="switchView('analytics', this)"><i class="fa-solid fa-chart-pie"></i> Analytics</li>
-        
-        <!-- El-button l-jdida hya hadi -->
-        <li>
-            <a href="HO.html" style="text-decoration: none; color: inherit; display: flex; align-items: center; width: 100%; gap: 10px;">
-                <i class="fa-solid fa-house"></i> HO Page
-            </a>
-        </li>
-    </ul>
-    
-    <div id="admin-restaurants-section" style="display:none;">
-        <div class="nav-title" style="margin-top: 15px; display: flex; justify-content: space-between; cursor: pointer;" onclick="toggleLocations()">
-            <span>Locations</span>
-            <i class="fa-solid fa-chevron-down" id="locations-chevron" style="transition: transform 0.2s;"></i>
-        </div>
-        <ul class="nav-menu" id="resto-list">
-        </ul>
-    </div>
-</div>
+                <div class="nav-title">Main Menu</div>
+                <ul class="nav-menu">
+                    <li class="active" onclick="switchView('dashboard', this)"><i class="fa-solid fa-table-list"></i> Equipment Data</li>
+                    <li onclick="switchView('analytics', this)"><i class="fa-solid fa-chart-pie"></i> Analytics</li>
+                </ul>
+                
+                <div id="admin-restaurants-section" style="display:none;">
+                    <div class="nav-title" style="margin-top: 15px; display: flex; justify-content: space-between; cursor: pointer;" onclick="toggleLocations()">
+                        <span>Locations</span>
+                        <i class="fa-solid fa-chevron-down" id="locations-chevron" style="transition: transform 0.2s;"></i>
+                    </div>
+                    <ul class="nav-menu" id="resto-list">
+                    </ul>
+                </div>
+            </div>
         </aside>
 
         <main class="main-wrapper">
