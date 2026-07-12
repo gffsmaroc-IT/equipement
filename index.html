@@ -810,9 +810,10 @@
                 if(r.etat === "En Panne") down++;
             });
             
-            const total = data.length || 1; 
+            const existingItems = data.filter(r => r.exist);
+const total = existingItems.length || 1;
 
-            document.getElementById("kpi-total").innerText = data.length;
+document.getElementById("kpi-total").innerText = existingItems.length;
             document.getElementById("kpi-op").innerText = op;
             document.getElementById("kpi-deg").innerText = deg;
             document.getElementById("kpi-down").innerText = down;
